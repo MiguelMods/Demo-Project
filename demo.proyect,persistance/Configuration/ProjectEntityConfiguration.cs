@@ -18,13 +18,21 @@ public class ProjectEntityConfiguration : IEntityTypeConfiguration<ProjectEntity
         builder.Property(e => e.Objetive).HasMaxLength(500);
         builder.Property(e => e.Scope).HasMaxLength(500);
         builder.Property(e => e.Description).HasMaxLength(500);
-        builder.HasOne(e => e.Area).WithOne().HasForeignKey<AreaEntity>(a => a.SuperiorArea);
-        builder.HasOne(e => e.SubArea).WithOne().HasForeignKey<AreaEntity>(a => a.SuperiorAreaId);
+        builder
+     .HasOne(e => e.Area)
+     .WithMany()
+     .HasForeignKey(e => e.AreaId)
+     .OnDelete(DeleteBehavior.Restrict);
+        builder
+    .HasOne(e => e.SubArea)
+    .WithMany()
+    .HasForeignKey(e => e.SubAreaId)
+    .OnDelete(DeleteBehavior.Restrict);
         builder.Property(e => e.PoaRoadmap).HasDefaultValue(false);
-        builder.Property(e => e.EnterDate).IsRequired(false).HasDefaultValue(false);
-        builder.Property(e => e.WishDate).IsRequired(false).HasDefaultValue(false);
-        builder.Property(e => e.IsCritical).IsRequired(false).HasDefaultValue(false);
-        builder.Property(e => e.UseNormalFlow).IsRequired(false).HasDefaultValue(false);
+        builder.Property(e => e.EnterDate);
+        builder.Property(e => e.WishDate);
+        builder.Property(e => e.IsCritical).HasDefaultValue(false);
+        builder.Property(e => e.UseNormalFlow).HasDefaultValue(false);
         builder.HasOne(e => e.Priority).WithOne().HasForeignKey<PriorityTypeEntity>(a => a.PriorityTypeId);
         builder.HasOne(e => e.ProjectType).WithOne().HasForeignKey<ProjectTypeEntity>(a => a.ProjectTypeId);
         builder.HasOne(e => e.ProjectDevelopmentType).WithOne().HasForeignKey<ProjectDevelopmentTypeEntity>(a => a.ProjectDevelopmentTypeId);
