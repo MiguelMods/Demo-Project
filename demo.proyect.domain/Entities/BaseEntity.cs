@@ -2,11 +2,11 @@
 
 public abstract class BaseEntity
 {
-    public bool Active { get; set; }
-    public string AddedName { get; set; }
-    public DateTime AddedDate { get; set; }
-    public string ? ModifiedName { get; set; }
-    public DateTime ModifiedDate { get; set; }
+    public bool IsActive { get; set; }
+    public string CreatedBy { get; set; }
+    public DateTime CreatedAt { get; set; }
+    public string? UpdatedBy { get; set; }
+    public DateTime UpdatedAt { get; set; }
     public string RowGuid { get; set; }
-    public bool Delete { get; set; }
+    public bool IsDeleted { get; set; }
 }
