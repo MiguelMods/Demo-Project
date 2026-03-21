@@ -19,7 +19,7 @@ public class ProjectEntity : BaseEntity
     public bool IsCritical { get; set; }
     public bool UseNormalFlow { get; set; }
     public PriorityTypeEntity Priority { get; set; }
-    public long PriorityId { get; set; }
+    public long PriorityTypeId { get; set; }
     public ProjectTypeEntity ProjectType { get; set; }
     public long ProjectTypeId { get; set; }
     public ProjectDevelopmentTypeEntity ProjectDevelopmentType { get; set; }
