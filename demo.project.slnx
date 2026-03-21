@@ -1,6 +1,6 @@
 <Solution>
   <Project Path="demo.project.site/demo.project.site.csproj" />
-  <Project Path="demo.proyect,persistance/demo.proyect,persistance.csproj" />
+  <Project Path="demo.proyect,persistance/demo.proyect.persistance.csproj" />
   <Project Path="demo.proyect.application/demo.proyect.application.csproj" />
   <Project Path="demo.proyect.common/demo.proyect.common.csproj" />
   <Project Path="demo.proyect.domain/demo.proyect.domain.csproj" />
