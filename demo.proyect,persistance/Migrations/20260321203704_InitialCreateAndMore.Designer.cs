@@ -12,7 +12,7 @@ using demo.proyect_persistance.Context;
 namespace demo.proyect_persistance.Migrations
 {
     [DbContext(typeof(DemoProjectApplicationContext))]
-    [Migration("20260321202005_InitialCreateAndMore")]
+    [Migration("20260321203704_InitialCreateAndMore")]
     partial class InitialCreateAndMore
     {
         /// <inheritdoc />
@@ -100,7 +100,10 @@ namespace demo.proyect_persistance.Migrations
             modelBuilder.Entity("demo.proyect.domain.Entities.PriorityTypeEntity", b =>
                 {
                     b.Property<long>("PriorityTypeId")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("PriorityTypeId"));
 
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
@@ -156,12 +159,50 @@ namespace demo.proyect_persistance.Migrations
                         .IsUnique();
 
                     b.ToTable("prj_tipo_prioridad", "dbo");
+
+                    b.HasData(
+                        new
+                        {
+                            PriorityTypeId = 1L,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedBy = "seed-on-proyect",
+                            Description = "best effort",
+                            IsActive = false,
+                            IsDeleted = false,
+                            Name = "best effort",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            PriorityTypeId = 2L,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedBy = "seed-on-proyect",
+                            Description = "time sensitive",
+                            IsActive = false,
+                            IsDeleted = false,
+                            Name = "time sensitive",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            PriorityTypeId = 3L,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedBy = "seed-on-proyect",
+                            Description = "top priority",
+                            IsActive = false,
+                            IsDeleted = false,
+                            Name = "top priority",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        });
                 });
 
             modelBuilder.Entity("demo.proyect.domain.Entities.ProjectDevelopmentTypeEntity", b =>
                 {
                     b.Property<long>("ProjectDevelopmentTypeId")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("ProjectDevelopmentTypeId"));
 
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
@@ -217,6 +258,41 @@ namespace demo.proyect_persistance.Migrations
                         .IsUnique();
 
                     b.ToTable("prj_tipo_ejecucion", "dbo");
+
+                    b.HasData(
+                        new
+                        {
+                            ProjectDevelopmentTypeId = 1L,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedBy = "me",
+                            Description = "fast track",
+                            IsActive = false,
+                            IsDeleted = false,
+                            Name = "fast track",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            ProjectDevelopmentTypeId = 2L,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedBy = "me",
+                            Description = "super fast track",
+                            IsActive = false,
+                            IsDeleted = false,
+                            Name = "super fast track",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            ProjectDevelopmentTypeId = 3L,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedBy = "me",
+                            Description = "full track",
+                            IsActive = false,
+                            IsDeleted = false,
+                            Name = "full track",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        });
                 });
 
             modelBuilder.Entity("demo.proyect.domain.Entities.ProjectEntity", b =>
@@ -286,7 +362,7 @@ namespace demo.proyect_persistance.Migrations
                         .HasColumnType("bit")
                         .HasDefaultValue(false);
 
-                    b.Property<long>("PriorityId")
+                    b.Property<long>("PriorityTypeId")
                         .HasColumnType("bigint");
 
                     b.Property<long>("ProjectDevelopmentTypeId")
@@ -335,6 +411,12 @@ namespace demo.proyect_persistance.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
+                    b.HasIndex("PriorityTypeId");
+
+                    b.HasIndex("ProjectDevelopmentTypeId");
+
+                    b.HasIndex("ProjectTypeId");
+
                     b.HasIndex("RowGuid")
                         .IsUnique();
 
@@ -346,7 +428,10 @@ namespace demo.proyect_persistance.Migrations
             modelBuilder.Entity("demo.proyect.domain.Entities.ProjectTypeEntity", b =>
                 {
                     b.Property<long>("ProjectTypeId")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("ProjectTypeId"));
 
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
@@ -402,24 +487,41 @@ namespace demo.proyect_persistance.Migrations
                         .IsUnique();
 
                     b.ToTable("prj_tipo_proyecto", "dbo");
-                });
 
-            modelBuilder.Entity("demo.proyect.domain.Entities.PriorityTypeEntity", b =>
-                {
-                    b.HasOne("demo.proyect.domain.Entities.ProjectEntity", null)
-                        .WithOne("Priority")
-                        .HasForeignKey("demo.proyect.domain.Entities.PriorityTypeEntity", "PriorityTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("demo.proyect.domain.Entities.ProjectDevelopmentTypeEntity", b =>
-                {
-                    b.HasOne("demo.proyect.domain.Entities.ProjectEntity", null)
-                        .WithOne("ProjectDevelopmentType")
-                        .HasForeignKey("demo.proyect.domain.Entities.ProjectDevelopmentTypeEntity", "ProjectDevelopmentTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasData(
+                        new
+                        {
+                            ProjectTypeId = 1L,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedBy = "me",
+                            Description = "Regulatorio",
+                            IsActive = false,
+                            IsDeleted = false,
+                            Name = "Regulatorio",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            ProjectTypeId = 2L,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedBy = "me",
+                            Description = "Comercial",
+                            IsActive = false,
+                            IsDeleted = false,
+                            Name = "Comercial",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            ProjectTypeId = 3L,
+                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedBy = "me",
+                            Description = "Tecnico",
+                            IsActive = false,
+                            IsDeleted = false,
+                            Name = "Tecnico",
+                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        });
                 });
 
             modelBuilder.Entity("demo.proyect.domain.Entities.ProjectEntity", b =>
@@ -430,6 +532,24 @@ namespace demo.proyect_persistance.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("demo.proyect.domain.Entities.PriorityTypeEntity", "Priority")
+                        .WithMany()
+                        .HasForeignKey("PriorityTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("demo.proyect.domain.Entities.ProjectDevelopmentTypeEntity", "ProjectDevelopmentType")
+                        .WithMany()
+                        .HasForeignKey("ProjectDevelopmentTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("demo.proyect.domain.Entities.ProjectTypeEntity", "ProjectType")
+                        .WithMany()
+                        .HasForeignKey("ProjectTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("demo.proyect.domain.Entities.AreaEntity", "SubArea")
                         .WithMany()
                         .HasForeignKey("SubAreaId")
@@ -438,28 +558,13 @@ namespace demo.proyect_persistance.Migrations
 
                     b.Navigation("Area");
 
+                    b.Navigation("Priority");
+
+                    b.Navigation("ProjectDevelopmentType");
+
+                    b.Navigation("ProjectType");
+
                     b.Navigation("SubArea");
-                });
-
-            modelBuilder.Entity("demo.proyect.domain.Entities.ProjectTypeEntity", b =>
-                {
-                    b.HasOne("demo.proyect.domain.Entities.ProjectEntity", null)
-                        .WithOne("ProjectType")
-                        .HasForeignKey("demo.proyect.domain.Entities.ProjectTypeEntity", "ProjectTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("demo.proyect.domain.Entities.ProjectEntity", b =>
-                {
-                    b.Navigation("Priority")
-                        .IsRequired();
-
-                    b.Navigation("ProjectDevelopmentType")
-                        .IsRequired();
-
-                    b.Navigation("ProjectType")
-                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

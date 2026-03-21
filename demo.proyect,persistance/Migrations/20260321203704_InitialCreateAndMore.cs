@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace demo.proyect_persistance.Migrations
 {
     /// <inheritdoc />
@@ -38,6 +40,72 @@ namespace demo.proyect_persistance.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "prj_tipo_ejecucion",
+                schema: "dbo",
+                columns: table => new
+                {
+                    ProjectDevelopmentTypeId = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false, defaultValue: true),
+                    CreatedBy = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETDATE()"),
+                    UpdatedBy = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETDATE()"),
+                    RowGuid = table.Column<string>(type: "nvarchar(450)", nullable: false, defaultValueSql: "NEWID()"),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_prj_tipo_ejecucion", x => x.ProjectDevelopmentTypeId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "prj_tipo_prioridad",
+                schema: "dbo",
+                columns: table => new
+                {
+                    PriorityTypeId = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false, defaultValue: true),
+                    CreatedBy = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETDATE()"),
+                    UpdatedBy = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETDATE()"),
+                    RowGuid = table.Column<string>(type: "nvarchar(450)", nullable: false, defaultValueSql: "NEWID()"),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_prj_tipo_prioridad", x => x.PriorityTypeId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "prj_tipo_proyecto",
+                schema: "dbo",
+                columns: table => new
+                {
+                    ProjectTypeId = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false, defaultValue: true),
+                    CreatedBy = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETDATE()"),
+                    UpdatedBy = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETDATE()"),
+                    RowGuid = table.Column<string>(type: "nvarchar(450)", nullable: false, defaultValueSql: "NEWID()"),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_prj_tipo_proyecto", x => x.ProjectTypeId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "prj_proyecto",
                 schema: "dbo",
                 columns: table => new
@@ -57,7 +125,7 @@ namespace demo.proyect_persistance.Migrations
                     WishDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsCritical = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
                     UseNormalFlow = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
-                    PriorityId = table.Column<long>(type: "bigint", nullable: false),
+                    PriorityTypeId = table.Column<long>(type: "bigint", nullable: false),
                     ProjectTypeId = table.Column<long>(type: "bigint", nullable: false),
                     ProjectDevelopmentTypeId = table.Column<long>(type: "bigint", nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: false, defaultValue: true),
@@ -85,90 +153,60 @@ namespace demo.proyect_persistance.Migrations
                         principalTable: "areas",
                         principalColumn: "AreaId",
                         onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "prj_tipo_ejecucion",
-                schema: "dbo",
-                columns: table => new
-                {
-                    ProjectDevelopmentTypeId = table.Column<long>(type: "bigint", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false, defaultValue: true),
-                    CreatedBy = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETDATE()"),
-                    UpdatedBy = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETDATE()"),
-                    RowGuid = table.Column<string>(type: "nvarchar(450)", nullable: false, defaultValueSql: "NEWID()"),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_prj_tipo_ejecucion", x => x.ProjectDevelopmentTypeId);
                     table.ForeignKey(
-                        name: "FK_prj_tipo_ejecucion_prj_proyecto_ProjectDevelopmentTypeId",
+                        name: "FK_prj_proyecto_prj_tipo_ejecucion_ProjectDevelopmentTypeId",
                         column: x => x.ProjectDevelopmentTypeId,
                         principalSchema: "dbo",
-                        principalTable: "prj_proyecto",
-                        principalColumn: "ProjectId",
+                        principalTable: "prj_tipo_ejecucion",
+                        principalColumn: "ProjectDevelopmentTypeId",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "prj_tipo_prioridad",
-                schema: "dbo",
-                columns: table => new
-                {
-                    PriorityTypeId = table.Column<long>(type: "bigint", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false, defaultValue: true),
-                    CreatedBy = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETDATE()"),
-                    UpdatedBy = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETDATE()"),
-                    RowGuid = table.Column<string>(type: "nvarchar(450)", nullable: false, defaultValueSql: "NEWID()"),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_prj_tipo_prioridad", x => x.PriorityTypeId);
                     table.ForeignKey(
-                        name: "FK_prj_tipo_prioridad_prj_proyecto_PriorityTypeId",
+                        name: "FK_prj_proyecto_prj_tipo_prioridad_PriorityTypeId",
                         column: x => x.PriorityTypeId,
                         principalSchema: "dbo",
-                        principalTable: "prj_proyecto",
-                        principalColumn: "ProjectId",
+                        principalTable: "prj_tipo_prioridad",
+                        principalColumn: "PriorityTypeId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_prj_proyecto_prj_tipo_proyecto_ProjectTypeId",
+                        column: x => x.ProjectTypeId,
+                        principalSchema: "dbo",
+                        principalTable: "prj_tipo_proyecto",
+                        principalColumn: "ProjectTypeId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "prj_tipo_proyecto",
+            migrationBuilder.InsertData(
                 schema: "dbo",
-                columns: table => new
+                table: "prj_tipo_ejecucion",
+                columns: new[] { "ProjectDevelopmentTypeId", "CreatedBy", "Description", "Name", "UpdatedBy" },
+                values: new object[,]
                 {
-                    ProjectTypeId = table.Column<long>(type: "bigint", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false, defaultValue: true),
-                    CreatedBy = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETDATE()"),
-                    UpdatedBy = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETDATE()"),
-                    RowGuid = table.Column<string>(type: "nvarchar(450)", nullable: false, defaultValueSql: "NEWID()"),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false, defaultValue: false)
-                },
-                constraints: table =>
+                    { 1L, "me", "fast track", "fast track", null },
+                    { 2L, "me", "super fast track", "super fast track", null },
+                    { 3L, "me", "full track", "full track", null }
+                });
+
+            migrationBuilder.InsertData(
+                schema: "dbo",
+                table: "prj_tipo_prioridad",
+                columns: new[] { "PriorityTypeId", "CreatedBy", "Description", "Name", "UpdatedBy" },
+                values: new object[,]
                 {
-                    table.PrimaryKey("PK_prj_tipo_proyecto", x => x.ProjectTypeId);
-                    table.ForeignKey(
-                        name: "FK_prj_tipo_proyecto_prj_proyecto_ProjectTypeId",
-                        column: x => x.ProjectTypeId,
-                        principalSchema: "dbo",
-                        principalTable: "prj_proyecto",
-                        principalColumn: "ProjectId",
-                        onDelete: ReferentialAction.Cascade);
+                    { 1L, "seed-on-proyect", "best effort", "best effort", null },
+                    { 2L, "seed-on-proyect", "time sensitive", "time sensitive", null },
+                    { 3L, "seed-on-proyect", "top priority", "top priority", null }
+                });
+
+            migrationBuilder.InsertData(
+                schema: "dbo",
+                table: "prj_tipo_proyecto",
+                columns: new[] { "ProjectTypeId", "CreatedBy", "Description", "Name", "UpdatedBy" },
+                values: new object[,]
+                {
+                    { 1L, "me", "Regulatorio", "Regulatorio", null },
+                    { 2L, "me", "Comercial", "Comercial", null },
+                    { 3L, "me", "Tecnico", "Tecnico", null }
                 });
 
             migrationBuilder.CreateIndex(
@@ -211,6 +249,24 @@ namespace demo.proyect_persistance.Migrations
                 table: "prj_proyecto",
                 column: "Name",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_prj_proyecto_PriorityTypeId",
+                schema: "dbo",
+                table: "prj_proyecto",
+                column: "PriorityTypeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_prj_proyecto_ProjectDevelopmentTypeId",
+                schema: "dbo",
+                table: "prj_proyecto",
+                column: "ProjectDevelopmentTypeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_prj_proyecto_ProjectTypeId",
+                schema: "dbo",
+                table: "prj_proyecto",
+                column: "ProjectTypeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_prj_proyecto_RowGuid",
@@ -272,6 +328,14 @@ namespace demo.proyect_persistance.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "prj_proyecto",
+                schema: "dbo");
+
+            migrationBuilder.DropTable(
+                name: "areas",
+                schema: "dbo");
+
+            migrationBuilder.DropTable(
                 name: "prj_tipo_ejecucion",
                 schema: "dbo");
 
@@ -281,14 +345,6 @@ namespace demo.proyect_persistance.Migrations
 
             migrationBuilder.DropTable(
                 name: "prj_tipo_proyecto",
-                schema: "dbo");
-
-            migrationBuilder.DropTable(
-                name: "prj_proyecto",
-                schema: "dbo");
-
-            migrationBuilder.DropTable(
-                name: "areas",
                 schema: "dbo");
         }
     }
