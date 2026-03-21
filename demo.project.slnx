@@ -1,4 +1,7 @@
 <Solution>
+  <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
+  </Folder>
   <Project Path="demo.project.site/demo.project.site.csproj" />
   <Project Path="demo.proyect,persistance/demo.proyect.persistance.csproj" />
   <Project Path="demo.proyect.application/demo.proyect.application.csproj" />
