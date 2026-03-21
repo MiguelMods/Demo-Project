@@ -14,8 +14,8 @@ public class ProjectEntity : BaseEntity
     public AreaEntity SubArea { get; set; }
     public long SubAreaId { get; set; }
     public bool PoaRoadmap { get; set; }
-    public DateTime EnterDate { get; set; }
-    public DateTime WishDate { get; set; }
+    public DateTime? EnterDate { get; set; }
+    public DateTime? WishDate { get; set; }
     public bool IsCritical { get; set; }
     public bool UseNormalFlow { get; set; }
     public PriorityTypeEntity Priority { get; set; }
