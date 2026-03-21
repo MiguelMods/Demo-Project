@@ -21,5 +21,10 @@ public class ProjectDevelopmentTypeEntityConfiguration : IEntityTypeConfiguratio
         builder.Property(e => e.IsDeleted).HasDefaultValue(false);
         builder.Property(e => e.RowGuid).ValueGeneratedOnAdd().HasDefaultValueSql("NEWID()");
         builder.HasIndex(e => e.RowGuid).IsUnique();
+        builder.HasData([
+            new(){ ProjectDevelopmentTypeId = 1, Name = "fast track", Description = "fast track", CreatedBy = "me" },
+            new(){ ProjectDevelopmentTypeId = 2, Name = "super fast track", Description = "super fast track", CreatedBy = "me" },
+            new(){ ProjectDevelopmentTypeId = 3, Name = "full track", Description = "full track", CreatedBy = "me" },
+            ]);
     }
 }

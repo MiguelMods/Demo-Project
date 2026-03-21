@@ -33,9 +33,9 @@ public class ProjectEntityConfiguration : IEntityTypeConfiguration<ProjectEntity
         builder.Property(e => e.WishDate);
         builder.Property(e => e.IsCritical).HasDefaultValue(false);
         builder.Property(e => e.UseNormalFlow).HasDefaultValue(false);
-        builder.HasOne(e => e.Priority).WithOne().HasForeignKey<PriorityTypeEntity>(a => a.PriorityTypeId);
-        builder.HasOne(e => e.ProjectType).WithOne().HasForeignKey<ProjectTypeEntity>(a => a.ProjectTypeId);
-        builder.HasOne(e => e.ProjectDevelopmentType).WithOne().HasForeignKey<ProjectDevelopmentTypeEntity>(a => a.ProjectDevelopmentTypeId);
+        builder.HasOne(e => e.Priority).WithMany().HasForeignKey(a => a.PriorityTypeId);
+        builder.HasOne(e => e.ProjectType).WithMany().HasForeignKey(a => a.ProjectTypeId);
+        builder.HasOne(e => e.ProjectDevelopmentType).WithMany().HasForeignKey(a => a.ProjectDevelopmentTypeId);
         builder.Property(e => e.CreatedBy).IsRequired(true).HasMaxLength(100);
         builder.Property(e => e.CreatedAt).ValueGeneratedOnAdd().HasDefaultValueSql("GETDATE()");
         builder.Property(e => e.UpdatedBy).IsRequired(false).HasMaxLength(100);

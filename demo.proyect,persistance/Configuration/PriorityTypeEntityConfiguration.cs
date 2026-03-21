@@ -21,5 +21,28 @@ public class PriorityTypeEntityConfiguration : IEntityTypeConfiguration<Priority
         builder.Property(e => e.IsDeleted).HasDefaultValue(false);
         builder.Property(e => e.RowGuid).ValueGeneratedOnAdd().HasDefaultValueSql("NEWID()");
         builder.HasIndex(e => e.RowGuid).IsUnique();
+        builder.HasData([
+            new()
+            {
+                PriorityTypeId = 1,
+                Name = "best effort",
+                Description = "best effort",
+                CreatedBy = "seed-on-proyect"
+            },
+            new()
+            {
+                PriorityTypeId = 2,
+                Name = "time sensitive",
+                Description = "time sensitive",
+                CreatedBy = "seed-on-proyect"
+            },
+            new()
+            {
+                PriorityTypeId = 3,
+                Name = "top priority",
+                Description = "top priority",
+                CreatedBy = "seed-on-proyect"
+            }
+            ]);
     }
 }
