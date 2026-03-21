@@ -1,7 +1,10 @@
+using demo.proyect_persistance;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddPersistance(builder.Configuration);
 
 var app = builder.Build();
 
