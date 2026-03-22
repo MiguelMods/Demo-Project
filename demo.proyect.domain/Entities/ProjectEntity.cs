@@ -24,4 +24,5 @@ public class ProjectEntity : BaseEntity
     public long ProjectTypeId { get; set; }
     public ProjectDevelopmentTypeEntity ProjectDevelopmentType { get; set; }
     public long ProjectDevelopmentTypeId { get; set; }
+    public ICollection<GoalEntity> Goals { get; set; }
 }
