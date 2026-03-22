@@ -18,16 +18,8 @@ public class ProjectEntityConfiguration : IEntityTypeConfiguration<ProjectEntity
         builder.Property(e => e.Objetive).HasMaxLength(500);
         builder.Property(e => e.Scope).HasMaxLength(500);
         builder.Property(e => e.Description).HasMaxLength(500);
-        builder
-     .HasOne(e => e.Area)
-     .WithMany()
-     .HasForeignKey(e => e.AreaId)
-     .OnDelete(DeleteBehavior.Restrict);
-        builder
-    .HasOne(e => e.SubArea)
-    .WithMany()
-    .HasForeignKey(e => e.SubAreaId)
-    .OnDelete(DeleteBehavior.Restrict);
+        builder.HasOne(e => e.Area).WithMany().HasForeignKey(e => e.AreaId).OnDelete(DeleteBehavior.Restrict);
+        builder.HasOne(e => e.SubArea).WithMany().HasForeignKey(e => e.SubAreaId).OnDelete(DeleteBehavior.Restrict);
         builder.Property(e => e.PoaRoadmap).HasDefaultValue(false);
         builder.Property(e => e.EnterDate);
         builder.Property(e => e.WishDate);
@@ -44,5 +36,6 @@ public class ProjectEntityConfiguration : IEntityTypeConfiguration<ProjectEntity
         builder.Property(e => e.IsDeleted).HasDefaultValue(false);
         builder.Property(e => e.RowGuid).ValueGeneratedOnAdd().HasDefaultValueSql("NEWID()");
         builder.HasIndex(e => e.RowGuid).IsUnique();
+        builder.HasMany(e => e.Goals).WithOne(e => e.Project).HasForeignKey(e => e.ProjectId).OnDelete(DeleteBehavior.Cascade);
     }
 }
