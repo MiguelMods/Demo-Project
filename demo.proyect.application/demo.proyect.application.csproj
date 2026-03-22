@@ -11,5 +11,13 @@
 		<PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="9.0.5" />
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.5" />
 	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\demo.proyect.domain\demo.proyect.domain.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Update\" />
+	</ItemGroup>
 	
 </Project>
