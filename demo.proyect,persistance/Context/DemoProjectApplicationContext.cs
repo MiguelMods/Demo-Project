@@ -11,6 +11,12 @@ public class DemoProjectApplicationContext(DbContextOptions<DemoProjectApplicati
     public DbSet<ProjectDevelopmentTypeEntity> ProjectDevelopmentTypeEntities  { get; set; }
     public DbSet<ProjectTypeEntity> ProjectTypeEntities  { get; set; }
     public DbSet<ProjectEntity> ProjectEntities  { get; set; }
+    public DbSet<ActionPlanEntity> ActionPlanEntities { get; set; }
+    public DbSet<GoalEntity> GoalEntities { get; set; }
+    public DbSet<PerspectiveEntity> PerspectiveEntities { get; set; }
+    public DbSet<InitiativeEntity> InitiativeEntities { get; set; }
+    public DbSet<PeriodEntity> PeriodEntities { get; set; }
+    public DbSet<GoalTypeEntity> GoalTypes { get; set; } 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfiguration(new AreaEntityConfiguration());
@@ -18,5 +24,11 @@ public class DemoProjectApplicationContext(DbContextOptions<DemoProjectApplicati
         modelBuilder.ApplyConfiguration(new ProjectDevelopmentTypeEntityConfiguration());
         modelBuilder.ApplyConfiguration(new ProjectTypeEntityConfiguration());
         modelBuilder.ApplyConfiguration(new ProjectEntityConfiguration());
+        modelBuilder.ApplyConfiguration(new ActionPlanEntityConfiguration());
+        modelBuilder.ApplyConfiguration(new GoalEntityConfiguration());
+        modelBuilder.ApplyConfiguration(new PerspectiveEntityConfiguration());
+        modelBuilder.ApplyConfiguration(new InitiativeEntityConfiguration());
+        modelBuilder.ApplyConfiguration(new PeriodEntityConfiguration());
+        modelBuilder.ApplyConfiguration(new GoalTypeEntityConfiguration());
     }
 }
