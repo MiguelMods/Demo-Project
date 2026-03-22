@@ -5,8 +5,8 @@ public class InitiativeEntity : BaseEntity
     public long InitiativeId { get; set; }
     public string Name { get; set; }
     public string? Description { get; set; }
-    public ActionPlanEntity? ActionPlan { get; set; }
-    public long? ActionPlanId { get; set; }
+    public ActionPlanEntity? ActionPlanEntity { get; set; }
+    public long? ActionPlanOriginId { get; set; }
     public bool IsReal { get; set; }
     public bool IsExecutable { get; set; }
     public GoalEntity Goal { get; set; }

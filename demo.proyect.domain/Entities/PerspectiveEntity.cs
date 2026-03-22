@@ -2,7 +2,7 @@
 
 public class PerspectiveEntity : BaseEntity
 {
-    public string GoalTypeId { get; set; }
+    public long PerspectiveId { get; set; }
     public string Name { get; set; }
     public string? Description { get; set; }
 }

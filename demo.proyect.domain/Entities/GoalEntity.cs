@@ -5,8 +5,8 @@ public class GoalEntity : BaseEntity
     public long GoalId { get; set; }
     public string Code { get; set; }
     public string Name { get; set; }
-    public string Description { get; set; }
-    public string Formula { get; set; }
+    public string? Description { get; set; }
+    public string? Formula { get; set; }
     public bool IsReal { get; set; }
     public AreaEntity Area { get; set; }
     public long AreaId { get; set; }
