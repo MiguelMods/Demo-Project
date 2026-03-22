@@ -1,4 +1,6 @@
-﻿using demo.proyect_persistance.Context;
+﻿using demo.proyect.application.Repository;
+using demo.proyect_persistance.Context;
+using demo.proyect_persistance.Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,5 +13,6 @@ public static class Dependencie
     {
         services.AddDbContext<DemoProjectApplicationContext>(options =>
             options.UseSqlServer(configuration.GetConnectionString("demoProjectDatabaseConnection")));
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
     }
 }
