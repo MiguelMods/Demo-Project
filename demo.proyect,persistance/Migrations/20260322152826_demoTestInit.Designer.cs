@@ -12,8 +12,8 @@ using demo.proyect_persistance.Context;
 namespace demo.proyect_persistance.Migrations
 {
     [DbContext(typeof(DemoProjectApplicationContext))]
-    [Migration("20260321203704_InitialCreateAndMore")]
-    partial class InitialCreateAndMore
+    [Migration("20260322152826_demoTestInit")]
+    partial class demoTestInit
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,93 @@ namespace demo.proyect_persistance.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("demo.proyect.domain.Entities.ActionPlanEntity", b =>
+                {
+                    b.Property<long>("ActionPlanId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("AreaId")
+                        .HasColumnType("bigint");
+
+                    b.Property<decimal?>("Budget")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<bool>("Converted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<long>("InitiativeId")
+                        .HasColumnType("bigint");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.Property<bool>("IsExecutable")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<int>("Order")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0);
+
+                    b.Property<string>("RowGuid")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)")
+                        .HasDefaultValueSql("NEWID()");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .ValueGeneratedOnUpdate()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("ActionPlanId");
+
+                    b.HasIndex("AreaId");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.HasIndex("RowGuid")
+                        .IsUnique();
+
+                    b.ToTable("plan_accion", "dbo");
+                });
 
             modelBuilder.Entity("demo.proyect.domain.Entities.AreaEntity", b =>
                 {
@@ -95,6 +182,395 @@ namespace demo.proyect_persistance.Migrations
                         .IsUnique();
 
                     b.ToTable("areas", "dbo");
+                });
+
+            modelBuilder.Entity("demo.proyect.domain.Entities.GoalEntity", b =>
+                {
+                    b.Property<long>("GoalId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("GoalId"));
+
+                    b.Property<long>("AreaId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(25)
+                        .HasColumnType("nvarchar(25)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("Formula")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<long>("GoalTypeId")
+                        .HasColumnType("bigint");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.Property<bool>("IsReal")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<long>("PeriodId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("PerspectiveId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("ProjectEntityProjectId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("ProjectId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("RowGuid")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)")
+                        .HasDefaultValueSql("NEWID()");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .ValueGeneratedOnUpdate()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("GoalId");
+
+                    b.HasIndex("AreaId");
+
+                    b.HasIndex("Code")
+                        .IsUnique();
+
+                    b.HasIndex("GoalTypeId");
+
+                    b.HasIndex("PeriodId");
+
+                    b.HasIndex("PerspectiveId");
+
+                    b.HasIndex("ProjectEntityProjectId");
+
+                    b.HasIndex("ProjectId");
+
+                    b.HasIndex("RowGuid")
+                        .IsUnique();
+
+                    b.ToTable("objetivos", "dbo");
+                });
+
+            modelBuilder.Entity("demo.proyect.domain.Entities.GoalTypeEntity", b =>
+                {
+                    b.Property<long>("GoalTypeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("GoalTypeId"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("RowGuid")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)")
+                        .HasDefaultValueSql("NEWID()");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .ValueGeneratedOnUpdate()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("GoalTypeId");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.HasIndex("RowGuid")
+                        .IsUnique();
+
+                    b.ToTable("tipo_objetivo", "dbo");
+                });
+
+            modelBuilder.Entity("demo.proyect.domain.Entities.InitiativeEntity", b =>
+                {
+                    b.Property<long>("InitiativeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("InitiativeId"));
+
+                    b.Property<long?>("ActionPlanOriginId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("AreaId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<long?>("GoalEntityGoalId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("GoalId")
+                        .HasColumnType("bigint");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.Property<bool>("IsExecutable")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.Property<bool>("IsReal")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("RowGuid")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)")
+                        .HasDefaultValueSql("NEWID()");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .ValueGeneratedOnUpdate()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("InitiativeId");
+
+                    b.HasIndex("ActionPlanOriginId");
+
+                    b.HasIndex("AreaId");
+
+                    b.HasIndex("GoalEntityGoalId");
+
+                    b.HasIndex("GoalId");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.HasIndex("RowGuid")
+                        .IsUnique();
+
+                    b.ToTable("iniciativa", "dbo");
+                });
+
+            modelBuilder.Entity("demo.proyect.domain.Entities.PeriodEntity", b =>
+                {
+                    b.Property<long>("PeriodId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("PeriodId"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("RowGuid")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)")
+                        .HasDefaultValueSql("NEWID()");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .ValueGeneratedOnUpdate()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("PeriodId");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.HasIndex("RowGuid")
+                        .IsUnique();
+
+                    b.ToTable("periodo", "dbo");
+                });
+
+            modelBuilder.Entity("demo.proyect.domain.Entities.PerspectiveEntity", b =>
+                {
+                    b.Property<long>("PerspectiveId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("PerspectiveId"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("RowGuid")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)")
+                        .HasDefaultValueSql("NEWID()");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .ValueGeneratedOnUpdate()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("PerspectiveId");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.HasIndex("RowGuid")
+                        .IsUnique();
+
+                    b.ToTable("perspectiva", "dbo");
                 });
 
             modelBuilder.Entity("demo.proyect.domain.Entities.PriorityTypeEntity", b =>
@@ -524,6 +1000,100 @@ namespace demo.proyect_persistance.Migrations
                         });
                 });
 
+            modelBuilder.Entity("demo.proyect.domain.Entities.ActionPlanEntity", b =>
+                {
+                    b.HasOne("demo.proyect.domain.Entities.InitiativeEntity", "Initiative")
+                        .WithMany("ActionPlanEntities")
+                        .HasForeignKey("ActionPlanId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("demo.proyect.domain.Entities.AreaEntity", "AreaEntity")
+                        .WithMany()
+                        .HasForeignKey("AreaId");
+
+                    b.Navigation("AreaEntity");
+
+                    b.Navigation("Initiative");
+                });
+
+            modelBuilder.Entity("demo.proyect.domain.Entities.GoalEntity", b =>
+                {
+                    b.HasOne("demo.proyect.domain.Entities.AreaEntity", "Area")
+                        .WithMany()
+                        .HasForeignKey("AreaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("demo.proyect.domain.Entities.GoalTypeEntity", "GoalType")
+                        .WithMany()
+                        .HasForeignKey("GoalTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("demo.proyect.domain.Entities.PeriodEntity", "Period")
+                        .WithMany()
+                        .HasForeignKey("PeriodId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("demo.proyect.domain.Entities.PerspectiveEntity", "Perspective")
+                        .WithMany()
+                        .HasForeignKey("PerspectiveId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("demo.proyect.domain.Entities.ProjectEntity", null)
+                        .WithMany("Goals")
+                        .HasForeignKey("ProjectEntityProjectId");
+
+                    b.HasOne("demo.proyect.domain.Entities.ProjectEntity", "Project")
+                        .WithMany()
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Area");
+
+                    b.Navigation("GoalType");
+
+                    b.Navigation("Period");
+
+                    b.Navigation("Perspective");
+
+                    b.Navigation("Project");
+                });
+
+            modelBuilder.Entity("demo.proyect.domain.Entities.InitiativeEntity", b =>
+                {
+                    b.HasOne("demo.proyect.domain.Entities.ActionPlanEntity", "ActionPlanEntity")
+                        .WithMany()
+                        .HasForeignKey("ActionPlanOriginId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("demo.proyect.domain.Entities.AreaEntity", "Area")
+                        .WithMany()
+                        .HasForeignKey("AreaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("demo.proyect.domain.Entities.GoalEntity", null)
+                        .WithMany("InitiativeEntities")
+                        .HasForeignKey("GoalEntityGoalId");
+
+                    b.HasOne("demo.proyect.domain.Entities.GoalEntity", "Goal")
+                        .WithMany()
+                        .HasForeignKey("GoalId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("ActionPlanEntity");
+
+                    b.Navigation("Area");
+
+                    b.Navigation("Goal");
+                });
+
             modelBuilder.Entity("demo.proyect.domain.Entities.ProjectEntity", b =>
                 {
                     b.HasOne("demo.proyect.domain.Entities.AreaEntity", "Area")
@@ -565,6 +1135,21 @@ namespace demo.proyect_persistance.Migrations
                     b.Navigation("ProjectType");
 
                     b.Navigation("SubArea");
+                });
+
+            modelBuilder.Entity("demo.proyect.domain.Entities.GoalEntity", b =>
+                {
+                    b.Navigation("InitiativeEntities");
+                });
+
+            modelBuilder.Entity("demo.proyect.domain.Entities.InitiativeEntity", b =>
+                {
+                    b.Navigation("ActionPlanEntities");
+                });
+
+            modelBuilder.Entity("demo.proyect.domain.Entities.ProjectEntity", b =>
+                {
+                    b.Navigation("Goals");
                 });
 #pragma warning restore 612, 618
         }
