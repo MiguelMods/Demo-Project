@@ -10,6 +10,7 @@ public class ProjectDevelopmentTypeEntityConfiguration : IEntityTypeConfiguratio
     {
         builder.ToTable("prj_tipo_ejecucion", "dbo");
         builder.HasKey(e => e.ProjectDevelopmentTypeId);
+        builder.Property(e => e.ProjectDevelopmentTypeId).ValueGeneratedOnAdd();
         builder.Property(e => e.Name).IsRequired().HasMaxLength(100);
         builder.HasIndex(e => e.Name).IsUnique();
         builder.Property(e => e.Description).HasMaxLength(500);

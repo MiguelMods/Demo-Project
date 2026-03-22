@@ -10,6 +10,7 @@ public class AreaEntityConfiguration : IEntityTypeConfiguration<AreaEntity>
     {
         builder.ToTable("areas", "dbo");
         builder.HasKey(e => e.AreaId);
+        builder.Property(e => e.AreaId).ValueGeneratedOnAdd();
         builder.Property(e => e.Code).IsRequired().HasMaxLength(3);
         builder.HasIndex(e => e.Code).IsUnique();
         builder.Property(e => e.Name).IsRequired().HasMaxLength(100);

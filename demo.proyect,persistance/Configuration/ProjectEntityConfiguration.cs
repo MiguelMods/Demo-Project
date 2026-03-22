@@ -10,6 +10,7 @@ public class ProjectEntityConfiguration : IEntityTypeConfiguration<ProjectEntity
     {
         builder.ToTable("prj_proyecto", "dbo");
         builder.HasKey(e => e.ProjectId);
+        builder.Property(e => e.ProjectId).ValueGeneratedOnAdd();
         builder.Property(e => e.CodeOne).IsRequired().HasMaxLength(6);
         builder.HasIndex(e => e.CodeOne).IsUnique();
         builder.Property(e => e.CodeTwo).HasMaxLength(20);
