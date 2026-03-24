@@ -10,4 +10,7 @@ public class UnitOfWork(DemoProjectApplicationContext demoProjectApplicationCont
     public IAreaEntityRepository AreaEntityRepository => new AreaEntityRepository(demoProjectApplicationContext);
     public IProjectDevelopmentTypeRepository ProjectDevelopmentTypeRepository => new ProjectDevelopmentTypeRepository(demoProjectApplicationContext);
     public IProjectTypeRepository ProjectTypeRepository => new ProjectTypeRepository(demoProjectApplicationContext);
+    public IProjectRepository ProjectRepository => new ProjectRepository(demoProjectApplicationContext);
+    public IGoalRepository GoalRepository => new GoalRepository(demoProjectApplicationContext);
+    public IInitiativeRepository InitiativeRepository => new InitiativeRepository(demoProjectApplicationContext);
 }
