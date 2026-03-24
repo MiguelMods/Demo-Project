@@ -22,5 +22,11 @@ public class PeriodEntityConfiguration : IEntityTypeConfiguration<PeriodEntity>
         builder.Property(e => e.IsDeleted).HasDefaultValue(false);
         builder.Property(e => e.RowGuid).ValueGeneratedOnAdd().HasDefaultValueSql("NEWID()");
         builder.HasIndex(e => e.RowGuid).IsUnique();
+        builder.HasData([
+            new() { PeriodId = 1, Name = "Periodo de #1", Description = "Periodo de #1", CreatedBy = "Me" },
+            new() { PeriodId = 2, Name = "Periodo de #2", Description = "Periodo de #2", CreatedBy = "Me" },
+            new() { PeriodId = 3, Name = "Periodo de #3", Description = "Periodo de #3", CreatedBy = "Me" },
+            new() { PeriodId = 4, Name = "Periodo de #4", Description = "Periodo de #4", CreatedBy = "Me" },
+            ]);
     }
 };

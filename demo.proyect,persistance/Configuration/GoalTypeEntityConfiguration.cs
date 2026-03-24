@@ -22,5 +22,8 @@ public class GoalTypeEntityConfiguration : IEntityTypeConfiguration<GoalTypeEnti
         builder.Property(e => e.IsDeleted).HasDefaultValue(false);
         builder.Property(e => e.RowGuid).ValueGeneratedOnAdd().HasDefaultValueSql("NEWID()");
         builder.HasIndex(e => e.RowGuid).IsUnique();
+        builder.HasData([
+            new() { GoalTypeId = 1, Name = "Tipo objetivo 1", CreatedBy = "me" }
+            ]);
     }
 }

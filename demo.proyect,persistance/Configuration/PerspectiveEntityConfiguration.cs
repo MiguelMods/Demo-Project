@@ -22,5 +22,10 @@ public class PerspectiveEntityConfiguration : IEntityTypeConfiguration<Perspecti
         builder.Property(e => e.IsDeleted).HasDefaultValue(false);
         builder.Property(e => e.RowGuid).ValueGeneratedOnAdd().HasDefaultValueSql("NEWID()");
         builder.HasIndex(e => e.RowGuid).IsUnique();
+        builder.HasData([
+            new () { PerspectiveId = 1, Name = "Perspectiva #1",  Description = "Perspectiva #1", CreatedBy = "me"  },
+            new () { PerspectiveId = 2, Name = "Perspectiva #2",  Description = "Perspectiva #2", CreatedBy = "me"  },
+            new () { PerspectiveId = 3, Name = "Perspectiva #3",  Description = "Perspectiva #3", CreatedBy = "me"  },
+            ]);
     }
 };
