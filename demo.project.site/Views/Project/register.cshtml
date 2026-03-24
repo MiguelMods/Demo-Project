@@ -1,0 +1,165 @@
+﻿@model ProjectViewModel
+
+<div class="row">
+    <div class="col-12 pt-3 pb-3">
+        <form asp-controller="project" asp-action="post" method="POST">
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary()
+            <input asp-for="ProjectId" type="hidden" />
+            <input asp-for="RowGuid" type="hidden" />
+            <div class="border p-3" style="border-radius: 15px">
+                <div class="row g-3 mb-3">
+                    <div class="col-12">
+                        <div class="d-flex justify-content-between">
+                            <h4>Registro de Proyecto</h4>
+                            <button type="reset" class="btn btn-warning" title="Limpiar Formulario">Limpiar <i class="fa fa-clean"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row g-3 align-items-center mb-1">
+                    <div class="col-auto col-6">
+                        <label asp-for="CodeOne" class="form-label"></label>
+                        <input asp-for="CodeOne" class="form-control form-control-sm" />
+                        <span asp-validation-for="CodeOne" class="text-danger"></span>
+                    </div>
+                    <div class="col-auto col-6">
+                        <label asp-for="CodeTwo" class="form-label"></label>
+                        <input asp-for="CodeTwo" class="form-control form-control-sm" />
+                    </div>
+                </div>
+                <div class="row g-3 align-items-center mt-1 mb-1">
+                    <div class="col-auto col-12">
+                        <label asp-for="Name" class="form-label"></label>
+                        <input asp-for="Name" class="form-control form-control-sm" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row g-3 align-items-center mt-1 mb-1">
+                    <div class="col-auto col-12">
+                        <label asp-for="Objetive" class="form-label"></label>
+                        <input asp-for="Objetive" class="form-control form-control-sm" />
+                        <span asp-validation-for="Objetive" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row g-3 align-items-center mt-1 mb-1">
+                    <div class="col-auto col-12">
+                        <label asp-for="Scope" class="form-label"></label>
+                        <input asp-for="Scope" class="form-control form-control-sm" />
+                        <span asp-validation-for="Scope" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row g-3 align-items-center mt-1 mb-1">
+                    <div class="col-auto col-12">
+                        <label asp-for="Description" class="form-label"></label>
+                        <input asp-for="Description" class="form-control form-control-sm" />
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row g-3 align-items-center mt-1 mb-1">
+                    <div class="col-auto col-12">
+                        <label asp-for="Area" class="form-label"></label>
+                        <select asp-for="AreaId" class="form-select form-select-sm">
+                            <option value="0">Seleccione una Opcion</option>
+                            @foreach (var option in ((List<SelectOption>)ViewBag.Area))
+                            {
+                                <option value="@option.Value">@option.Text.ToUpper()</option>
+                            }
+                        </select>
+                        <span asp-validation-for="AreaId" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row g-3 align-items-center mt-1 mb-1">
+                    <div class="col-auto col-12">
+                        <label asp-for="SubArea" class="form-label"></label>
+                        <select asp-for="SubAreaId" class="form-select form-select-sm">
+                            <option value="0">Seleccione una Opcion</option>
+                            @foreach (var option in ((List<SelectOption>)ViewBag.SubArea))
+                            {
+                                <option value="@option.Value">@option.Text.ToUpper()</option>
+                            }
+                        </select>
+                        <span asp-validation-for="SubAreaId" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row g-3 align-items-center mt-1 mb-1">
+                    <div class="col-auto col-12">
+                        <div class="d-flex gap-3">
+                            <label asp-for="PoaRoadMap" class="form-label"></label>
+                            <input asp-for="PoaRoadMap" type="checkbox" class="form-check" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row g-3 align-items-center mt-1 mb-1">
+                    <div class="col-auto col-12">
+                        <label asp-for="WishDate" class="form-label"></label>
+                        <input asp-for="WishDate" class="form-control form-control-sm" />
+                        <span asp-validation-for="WishDate" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row g-3 align-items-center mt-1 mb-1">
+                    <div class="col-auto col-12">
+                        <div class="d-flex gap-3">
+                            <label asp-for="IsCritical" class="form-label"></label>
+                            <input asp-for="IsCritical" type="checkbox" class="form-check" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row g-3 align-items-center mt-1 mb-1">
+                    <div class="col-auto col-12">
+                        <div class="d-flex gap-3">
+                            <label asp-for="UseNormalFlow" class="form-label"></label>
+                            <input asp-for="UseNormalFlow" type="checkbox" class="form-check" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row g-3 align-items-center mt-1 mb-1">
+                    <div class="col-auto col-12">
+                        <label asp-for="PriorityTypeId" class="form-label"></label>
+                        <select asp-for="PriorityTypeId" class="form-select form-select-sm">
+                            <option value="0">Seleccione una Opcion</option>
+                            @foreach (var option in ((List<SelectOption>)ViewBag.Priority))
+                            {
+                                <option value="@option.Value">@option.Text.ToUpper()</option>
+                            }
+                        </select>
+                        <span asp-validation-for="PriorityTypeId" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row g-3 align-items-center mt-1 mb-1">
+                    <div class="col-auto col-12">
+                        <label asp-for="ProjectTypeId" class="form-label"></label>
+                        <select asp-for="ProjectTypeId" class="form-select form-select-sm">
+                            <option value="0">Seleccione una Opcion</option>
+                            @foreach (var option in ((List<SelectOption>)ViewBag.ProjectType))
+                            {
+                                <option value="@option.Value">@option.Text.ToUpper()</option>
+                            }
+                        </select>
+                        <span asp-validation-for="ProjectTypeId" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row g-3 align-items-center mt-1 mb-1">
+                    <div class="col-auto col-12">
+                        <label asp-for="ProjectDevelopmentTypeId" class="form-label"></label>
+                        <select asp-for="ProjectDevelopmentTypeId" class="form-select form-select-sm">
+                            <option value="0">Seleccione una Opcion</option>
+                            @foreach (var option in ((List<SelectOption>)ViewBag.ProjectType))
+                            {
+                                <option value="@option.Value">@option.Text.ToUpper()</option>
+                            }
+                        </select>
+                        <span asp-validation-for="ProjectDevelopmentTypeId" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row g-3 mt-1 mb-1">
+                    <div class="col-auto col-12">
+                        <button class="btn btn-primary float-end w-50">Registrar</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
