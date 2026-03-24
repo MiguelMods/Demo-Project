@@ -13,11 +13,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <ProjectReference Include="..\demo.proyect.common\demo.proyect.common.csproj" />
 	  <ProjectReference Include="..\demo.proyect.domain\demo.proyect.domain.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="Update\" />
 	</ItemGroup>
 	
 </Project>
