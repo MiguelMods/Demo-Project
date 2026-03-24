@@ -6,4 +6,7 @@ public interface IUnitOfWork
     IAreaEntityRepository AreaEntityRepository { get; }
     IProjectDevelopmentTypeRepository ProjectDevelopmentTypeRepository { get; }
     IProjectTypeRepository ProjectTypeRepository { get; }
+    IProjectRepository ProjectRepository { get; }
+    IGoalRepository GoalRepository { get; }
+    IInitiativeRepository InitiativeRepository { get; }
 }
