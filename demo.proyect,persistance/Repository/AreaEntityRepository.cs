@@ -1,6 +1,7 @@
 ﻿using demo.proyect.application.Create;
 using demo.proyect.application.DTO_s;
 using demo.proyect.application.Repository;
+using demo.proyect.application.Update;
 using demo.proyect.domain.Entities;
 using demo.proyect_persistance.Context;
 using Microsoft.EntityFrameworkCore;
@@ -44,7 +45,7 @@ public class AreaEntityRepository(DemoProjectApplicationContext demoProjectAppli
         var newEntity = new AreaEntity
         {
             Name = areaEntity.Name,
-            Description = areaEntity.Description,
+            Description = areaEntity.Description ?? "",
             Code = areaEntity.Code,
             CreatedBy = areaEntity.CreateBy
         };
@@ -101,15 +102,15 @@ public class AreaEntityRepository(DemoProjectApplicationContext demoProjectAppli
         return result;
     }
 
-    public async Task<AreaResponse> UpdateAsync(AreaEntity areaEntity)
+    public async Task<AreaResponse> UpdateAsync(AreaUpdate areaEntity)
     {
         var entityOnDb = await entity.FirstOrDefaultAsync(x => x.RowGuid == areaEntity.RowGuid) ??
             throw new Exception("Entidad no encontrada");
 
         entityOnDb.Name = areaEntity.Name;
-        entityOnDb.Description = areaEntity.Description;
+        entityOnDb.Description = areaEntity.Description ?? "";
         entityOnDb.IsActive = areaEntity.IsActive;
-        entityOnDb.UpdatedBy = areaEntity.UpdatedBy;
+        entityOnDb.UpdatedBy = areaEntity.UpdateBy;
         entityOnDb.UpdatedAt = DateTime.Now;
 
         var result = await demoProjectApplicationContext.SaveChangesAsync();
