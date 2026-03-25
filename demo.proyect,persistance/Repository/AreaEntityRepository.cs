@@ -47,6 +47,7 @@ public class AreaEntityRepository(DemoProjectApplicationContext demoProjectAppli
             Name = areaEntity.Name,
             Description = areaEntity.Description ?? "",
             Code = areaEntity.Code,
+            SuperiorAreaId = areaEntity.SuperiorAreaId,
             CreatedBy = areaEntity.CreateBy
         };
         var result = await entity.AddAsync(newEntity);
@@ -109,6 +110,7 @@ public class AreaEntityRepository(DemoProjectApplicationContext demoProjectAppli
 
         entityOnDb.Name = areaEntity.Name;
         entityOnDb.Description = areaEntity.Description ?? "";
+        entityOnDb.SuperiorAreaId = areaEntity.SuperiorAreaId;
         entityOnDb.IsActive = areaEntity.IsActive;
         entityOnDb.UpdatedBy = areaEntity.UpdateBy;
         entityOnDb.UpdatedAt = DateTime.Now;

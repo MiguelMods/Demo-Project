@@ -24,5 +24,6 @@ public class AreaEntityConfiguration : IEntityTypeConfiguration<AreaEntity>
         builder.Property(e => e.IsDeleted).HasDefaultValue(false);
         builder.Property(e => e.RowGuid).ValueGeneratedOnAdd().HasDefaultValueSql("NEWID()");
         builder.HasIndex(e => e.RowGuid).IsUnique();
+        builder.HasOne(e => e.SuperiorAreaEntity).WithMany(e => e.SubAreasEntities).HasForeignKey(e => e.SuperiorAreaId).OnDelete(DeleteBehavior.Restrict);
     }   
 }

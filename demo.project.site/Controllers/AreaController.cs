@@ -16,6 +16,7 @@ namespace demo.project.site.Controllers
 
         public async Task<IActionResult> Register()
         {
+            await Load();
             return View(new AreaViewModel());
         }
 
@@ -26,6 +27,7 @@ namespace demo.project.site.Controllers
             if (area == null)
                 return await Index();
 
+            await Load();
             return View((AreaViewModel)area);
         }
 
@@ -40,6 +42,7 @@ namespace demo.project.site.Controllers
                 areaViewModel.UpdatedBy = "me";
                 var result = await unitOfWork.AreaEntityRepository.UpdateAsync(AreaViewModel.MapUpdate(areaViewModel));
 
+                await Load();
                 if (result != null || result?.AreaId > 0)
                     return View("detail", (AreaViewModel)result);
             }
@@ -47,12 +50,18 @@ namespace demo.project.site.Controllers
             {
                 areaViewModel.CreatedBy = "me";
                 var result = await unitOfWork.AreaEntityRepository.AddAsync(AreaViewModel.MapCreate(areaViewModel));
-
-                if(result != null || result?.AreaId > 0)
+                await Load();
+                if (result != null || result?.AreaId > 0)
                     return View("detail", (AreaViewModel)result);
             }
 
             return await Index();
+        }
+
+        public async Task Load() 
+        {
+            var listOfAreas = await unitOfWork.AreaEntityRepository.GetAllAsync();
+            ViewBag.listOfAreas = listOfAreas.Select(x => new SelectOption(x.AreaId, x.Name)).ToList();
         }
     }
 }

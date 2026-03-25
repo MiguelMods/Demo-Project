@@ -8,6 +8,7 @@ public class AreaResponse : BaseResponse
     public string Code { get; set; }
     public string Name { get; set; }
     public string Description { get; set; }
+    public long? SuperiorAreaId {  get; set; }
 
     public static explicit operator AreaResponse(AreaEntity areaEntity)
     => new()
@@ -16,6 +17,7 @@ public class AreaResponse : BaseResponse
         Code = areaEntity.Code,
         Name = areaEntity.Name,
         Description = areaEntity.Description,
+        SuperiorAreaId = areaEntity.SuperiorAreaId,
         IsActive = areaEntity.IsActive,
         CreatedBy = areaEntity.CreatedBy,
         CreatedAt = areaEntity.CreatedAt,
