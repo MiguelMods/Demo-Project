@@ -1,0 +1,86 @@
+﻿@model AreaViewModel
+
+<div class="row">
+    <div class="col-12 pt-3 pb-3">
+        <form asp-controller="area" asp-action="save" method="POST">
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary()
+            <input asp-for="AreaId" type="hidden" />
+            <input asp-for="RowGuid" type="hidden" />
+            <div class="border p-3" style="border-radius: 15px">
+                <div class="row g-3 mb-3">
+                    <div class="col-12">
+                        <div class="d-flex justify-content-between">
+                            <h4>Registro de Area</h4>
+                            <button type="reset" class="btn btn-warning" title="Limpiar Formulario">Limpiar <i class="fa fa-clean"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row g-3 align-items-center mt-1 mb-1">
+                    <div class="col-auto col-12">
+                        <label asp-for="Code" class="form-label"></label>
+                        <input asp-for="Code" class="form-control form-control-sm" />
+                        <span asp-validation-for="Code" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row g-3 align-items-center mt-1 mb-1">
+                    <div class="col-auto col-12">
+                        <label asp-for="Name" class="form-label"></label>
+                        <input asp-for="Name" class="form-control form-control-sm" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row g-3 align-items-center mt-1 mb-1">
+                    <div class="col-auto col-12">
+                        <label asp-for="Description" class="form-label"></label>
+                        <input asp-for="Description" class="form-control form-control-sm" />
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row g-3 align-items-center mt-1 mb-1">
+                    <div class="col-auto col-12">
+                        <label asp-for="Description" class="form-label"></label>
+                        <input asp-for="Description" class="form-control form-control-sm" />
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row g-3 align-items-center mt-1 mb-1">
+                    <div class="col-auto col-12">
+                        <label asp-for="IsActive" class="form-label"></label>
+                        <div class="form-check">
+                            <input asp-for="IsActive" type="checkbox" class="form-check-input" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row g-3 align-items-center mt-1 mb-1">
+                    <div class="col-auto col-6">
+                        <label asp-for="CreatedBy" class="form-label"></label>
+                        <input asp-for="CreatedBy" class="form-control form-control-sm3" readonly/>
+                    </div>
+                    <div class="col-auto col-6">
+                        <label asp-for="CreatedAt" class="form-label"></label>
+                        <input asp-for="CreatedAt" class="form-control form-control-sm3" readonly />
+                    </div>
+                </div>
+                <div class="row g-3 align-items-center mt-1 mb-1">
+                    <div class="col-auto col-6">
+                        <label asp-for="UpdatedBy" class="form-label"></label>
+                        <input asp-for="UpdatedBy" class="form-control form-control-sm3" readonly />
+                    </div>
+                    <div class="col-auto col-6">
+                        <label asp-for="UpdatedAt" class="form-label"></label>
+                        <input asp-for="UpdatedAt" class="form-control form-control-sm3" readonly />
+                    </div>
+                </div>
+                <div class="row g-3 mt-1 mb-1">
+                    <div class="col-auto col-12">
+                        <button class="btn btn-primary float-end w-50">Registrar</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
