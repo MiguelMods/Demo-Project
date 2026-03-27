@@ -6,13 +6,13 @@ namespace demo.proyect.application.Repository;
 
 public interface IAreaEntityRepository 
 {
-    Task<List<AreaResponse>> GetAllAsync();
-    Task<AreaResponse?> GetByIdAsync(long id);
-    Task<AreaResponse?> GetByRowGuidAsync(string rowGuid);
-    Task<AreaResponse> AddAsync(AreaCreate areaEntity);
-    Task<AreaResponse> UpdateAsync(AreaUpdate areaEntity);
-    Task<bool> ActiveInactiveAsync(long id);
-    Task<bool> ActiveInactiveAsync(string rowGuid);
-    Task<bool> DeleteAsync(long id);
-    Task<bool> DeleteAsync(string rowGuid);
+    Task<Result<List<AreaResponse>>> GetAllAsync();
+    Task<Result<AreaResponse?>> GetByIdAsync(long id);
+    Task<Result<AreaResponse?>> GetByRowGuidAsync(string rowGuid);
+    Task<Result<AreaResponse>> AddAsync(AreaCreate areaEntity);
+    Task<Result<AreaResponse>> UpdateAsync(AreaUpdate areaEntity);
+    Task<Result<bool>> ActiveInactiveAsync(long id);
+    Task<Result<bool>> ActiveInactiveAsync(string rowGuid);
+    Task<Result<bool>> DeleteAsync(long id);
+    Task<Result<bool>> DeleteAsync(string rowGuid);
 }

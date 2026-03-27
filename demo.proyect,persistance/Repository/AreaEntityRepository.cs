@@ -1,7 +1,9 @@
-﻿using demo.proyect.application.Create;
+﻿using demo.proyect.application;
+using demo.proyect.application.Create;
 using demo.proyect.application.DTO_s;
 using demo.proyect.application.Repository;
 using demo.proyect.application.Update;
+using demo.proyect.common.Helpers.Results;
 using demo.proyect.domain.Entities;
 using demo.proyect_persistance.Context;
 using Microsoft.EntityFrameworkCore;
@@ -13,97 +15,92 @@ public class AreaEntityRepository(DemoProjectApplicationContext demoProjectAppli
 
     private readonly DemoProjectApplicationContext demoProjectApplicationContext = demoProjectApplicationContext;
     private readonly DbSet<AreaEntity> entity = demoProjectApplicationContext.AreaEntities;
+    private const string _entityName = "area";
 
-    public async Task<bool> ActiveInactiveAsync(long id)
+    public async Task<Result<bool>> ActiveInactiveAsync(long id)
     {
         var entityOnDb = await entity.FirstOrDefaultAsync(x => x.AreaId == id);
 
         if (entityOnDb == null)
-            return false;
+            return Result<bool>.Failure(Messages.EntityNameNotFoundByPropertyAndValue(_entityName, "id", $"{id}"));
 
         entityOnDb.IsActive = !entityOnDb.IsActive;
-        var result = await demoProjectApplicationContext.SaveChangesAsync();
+        var saveResult = await demoProjectApplicationContext.SaveChangesAsync() > 0;
 
-        return result > 0;
+        return saveResult ? saveResult.Success() : saveResult.Failure(Messages.EntityNotUpdate);
     }
 
-    public async Task<bool> ActiveInactiveAsync(string rowGuid)
+    public async Task<Result<bool>> ActiveInactiveAsync(string rowGuid)
     {
         var entityOnDb = await entity.FirstOrDefaultAsync(x => x.RowGuid == rowGuid);
 
         if (entityOnDb == null)
-            return false;
+            return Result<bool>.Failure(Messages.EntityNameNotFoundByPropertyAndValue(_entityName, "RowGuid", $"{rowGuid}"));
 
         entityOnDb.IsActive = !entityOnDb.IsActive;
-        await demoProjectApplicationContext.SaveChangesAsync();
+        var saveResult = await demoProjectApplicationContext.SaveChangesAsync() > 0;
 
-        return true;
+        return saveResult ? saveResult.Success() : saveResult.Failure(Messages.EntityNotUpdate);
     }
 
-    public async Task<AreaResponse> AddAsync(AreaCreate areaEntity)
+    public async Task<Result<AreaResponse>> AddAsync(AreaCreate areaEntity)
     {
-        var newEntity = new AreaEntity
-        {
-            Name = areaEntity.Name,
-            Description = areaEntity.Description ?? "",
-            Code = areaEntity.Code,
-            SuperiorAreaId = areaEntity.SuperiorAreaId,
-            CreatedBy = areaEntity.CreateBy
-        };
+        var newEntity = Map(areaEntity);
         var result = await entity.AddAsync(newEntity);
-        var save = await demoProjectApplicationContext.SaveChangesAsync();
+        var saveResult = await demoProjectApplicationContext.SaveChangesAsync();
 
-        if (save > 0)
-            return (AreaResponse)result.Entity;
-
-        return new();
+        if (saveResult <= 0)
+            return Result<AreaResponse>.Failure(Messages.EntityNotCreated);
+        
+        var response = (AreaResponse)result.Entity;
+        return response.Success();
     }
 
-    public async Task<bool> DeleteAsync(long id)
+    public async Task<Result<bool>> DeleteAsync(long id)
     {
         var entityOnDb = await entity.FirstOrDefaultAsync(x => x.AreaId == id);
 
         if (entityOnDb == null)
-            return false;
+            return Result<bool>.Failure(Messages.EntityNameNotFoundByPropertyAndValue(_entityName, "id", $"{id}"));
 
         entityOnDb.IsDeleted = true;
-        await demoProjectApplicationContext.SaveChangesAsync();
+        var saveResult = await demoProjectApplicationContext.SaveChangesAsync() > 0;
 
-        return true;
+        return saveResult ? saveResult.Success() : saveResult.Failure(Messages.EntityNotDelete);
     }
 
-    public async Task<bool> DeleteAsync(string rowGuid)
+    public async Task<Result<bool>> DeleteAsync(string rowGuid)
     {
         var entityOnDb = await entity.FirstOrDefaultAsync(x => x.RowGuid == rowGuid);
 
         if (entityOnDb == null)
-            return false;
+            return Result<bool>.Failure(Messages.EntityNameNotFoundByPropertyAndValue(_entityName, "RowGuid", $"{rowGuid}"));
 
         entityOnDb.IsDeleted = true;
-        await demoProjectApplicationContext.SaveChangesAsync();
+        var saveResult = await demoProjectApplicationContext.SaveChangesAsync() > 0;
 
-        return true;
+        return saveResult ? saveResult.Success() : saveResult.Failure(Messages.EntityNotDelete);
     }
 
-    public async Task<List<AreaResponse>> GetAllAsync()
+    public async Task<Result<List<AreaResponse>>> GetAllAsync()
     {
         var result = entity.Select(x => (AreaResponse)x).ToList();
-        return result;
+        return result.Success();
     }
 
-    public async Task<AreaResponse?> GetByIdAsync(long id)
+    public async Task<Result<AreaResponse?>> GetByIdAsync(long id)
     {
         var result = await entity.Where(x => x.AreaId == id).Select(x => (AreaResponse)x).FirstOrDefaultAsync();
-        return result;
+        return result.Success();
     }
 
-    public async Task<AreaResponse?> GetByRowGuidAsync(string rowGuid)
+    public async Task<Result<AreaResponse?>> GetByRowGuidAsync(string rowGuid)
     {
         var result = await entity.Where(x => x.RowGuid == rowGuid).Select(x => (AreaResponse)x).FirstOrDefaultAsync();
-        return result;
+        return result.Success();
     }
 
-    public async Task<AreaResponse> UpdateAsync(AreaUpdate areaEntity)
+    public async Task<Result<AreaResponse>> UpdateAsync(AreaUpdate areaEntity)
     {
         var entityOnDb = await entity.FirstOrDefaultAsync(x => x.RowGuid == areaEntity.RowGuid) ??
             throw new Exception("Entidad no encontrada");
@@ -115,11 +112,22 @@ public class AreaEntityRepository(DemoProjectApplicationContext demoProjectAppli
         entityOnDb.UpdatedBy = areaEntity.UpdateBy;
         entityOnDb.UpdatedAt = DateTime.Now;
 
-        var result = await demoProjectApplicationContext.SaveChangesAsync();
+        var saveResult = await demoProjectApplicationContext.SaveChangesAsync() > 0;
 
-        if (result > 0)
-            return (AreaResponse)entityOnDb;
+        if (!saveResult)
+            return Result<AreaResponse>.Failure(Messages.EntityNotUpdate);
 
-        return new();
+        var response = (AreaResponse)entityOnDb;
+        return response.Success();
     }
+
+    private static AreaEntity Map(AreaCreate areaEntity)
+        => new ()
+        {
+            Name = areaEntity.Name,
+            Description = areaEntity.Description ?? "",
+            Code = areaEntity.Code,
+            SuperiorAreaId = areaEntity.SuperiorAreaId,
+            CreatedBy = areaEntity.CreateBy
+        };
 }

@@ -6,13 +6,13 @@ namespace demo.proyect.application.Repository;
 
 public interface IProjectDevelopmentTypeRepository
 {
-    Task<List<ProjectDevelopmentTypeResponse>> GetAllAsync();
-    Task<ProjectDevelopmentTypeResponse?> GetByIdAsync(long id);
-    Task<ProjectDevelopmentTypeResponse?> GetByRowGuidAsync(string rowGuid);
-    Task<ProjectDevelopmentTypeResponse> AddAsync(ProjectDevelopmentTypeCreate projectDevelopmentTypeCreate);
-    Task<ProjectDevelopmentTypeResponse> UpdateAsync(ProjectDevelopmentTypeEntity projectDevelopmentTypeEntity);
-    Task<bool> ActiveInactiveAsync(long id);
-    Task<bool> ActiveInactiveAsync(string rowGuid);
-    Task<bool> DeleteAsync(long id);
-    Task<bool> DeleteAsync(string rowGuid);
+    Task<Result<List<ProjectDevelopmentTypeResponse>>> GetAllAsync();
+    Task<Result<ProjectDevelopmentTypeResponse?>> GetByIdAsync(long id);
+    Task<Result<ProjectDevelopmentTypeResponse?>> GetByRowGuidAsync(string rowGuid);
+    Task<Result<ProjectDevelopmentTypeResponse>> AddAsync(ProjectDevelopmentTypeCreate projectDevelopmentTypeCreate);
+    Task<Result<ProjectDevelopmentTypeResponse>> UpdateAsync(ProjectDevelopmentTypeEntity projectDevelopmentTypeEntity);
+    Task<Result<bool>> ActiveInactiveAsync(long id);
+    Task<Result<bool>> ActiveInactiveAsync(string rowGuid);
+    Task<Result<bool>> DeleteAsync(long id);
+    Task<Result<bool>> DeleteAsync(string rowGuid);
 }

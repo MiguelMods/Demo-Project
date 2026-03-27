@@ -1,6 +1,8 @@
-﻿using demo.proyect.application.Create;
+﻿using demo.proyect.application;
+using demo.proyect.application.Create;
 using demo.proyect.application.DTO_s;
 using demo.proyect.application.Repository;
+using demo.proyect.common.Helpers.Results;
 using demo.proyect.domain.Entities;
 using demo.proyect_persistance.Context;
 using Microsoft.EntityFrameworkCore;
@@ -12,94 +14,96 @@ public class PriorityTypeEntityRepostory(DemoProjectApplicationContext demoProje
     
     private readonly DemoProjectApplicationContext demoProjectApplicationContext = demoProjectApplicationContext;
     private readonly DbSet<PriorityTypeEntity> entity = demoProjectApplicationContext.PriorityTypeEntities;
-    
-    public async Task<bool> ActiveInactiveAsync(long id)
+    private const string _entityName = "Tipo_Prioridad";
+
+    public async Task<Result<bool>> ActiveInactiveAsync(long id)
     {
         var entityOnDb = await entity.FirstOrDefaultAsync(x => x.PriorityTypeId == id);
 
         if (entityOnDb == null)
-            return false;
+            return Result<bool>.Failure(Messages.EntityNameNotFoundByPropertyAndValue(_entityName, "id", $"{id}"));
 
         entityOnDb.IsActive = !entityOnDb.IsActive;
-        var result = await demoProjectApplicationContext.SaveChangesAsync();
-        
-        return result > 0;
+        var saveResult = await demoProjectApplicationContext.SaveChangesAsync() > 0;
+
+        return saveResult ? saveResult.Success() : saveResult.Failure(Messages.EntityNotUpdate);
     }
 
-    public async Task<bool> ActiveInactiveAsync(string rowGuid)
+    public async Task<Result<bool>> ActiveInactiveAsync(string rowGuid)
     {
         var entityOnDb = await entity.FirstOrDefaultAsync(x => x.RowGuid == rowGuid);
 
         if (entityOnDb == null)
-            return false;
+            return Result<bool>.Failure(Messages.EntityNameNotFoundByPropertyAndValue(_entityName, "RowGuid", $"{rowGuid}"));
 
         entityOnDb.IsActive = !entityOnDb.IsActive;
-        await demoProjectApplicationContext.SaveChangesAsync();
+        var saveResult = await demoProjectApplicationContext.SaveChangesAsync() > 0;
 
-        return true;
+        return saveResult ? saveResult.Success() : saveResult.Failure(Messages.EntityNotUpdate);
     }
 
-    public async Task<PriorityTypeResponse> AddAsync(PriorityTypeCreate priorityTypeEntity)
+    public async Task<Result<PriorityTypeResponse>> AddAsync(PriorityTypeCreate priorityTypeEntity)
     {
         var newEntity = new PriorityTypeEntity() { 
             Name = priorityTypeEntity.Name,
             Description = priorityTypeEntity.Description,
             CreatedBy = priorityTypeEntity.CreateBy
         };
-        var result = await entity.AddAsync(newEntity);
-        var save = await demoProjectApplicationContext.SaveChangesAsync();
+        var addResult = await entity.AddAsync(newEntity);
+        var saveResult = await demoProjectApplicationContext.SaveChangesAsync() > 0;
 
-        if(save > 0)
-            return (PriorityTypeResponse)result.Entity;
+        if (!saveResult)
+            return Result<PriorityTypeResponse>.Failure(Messages.EntityNotCreated);
 
-        return new();
+        var entityResult = (PriorityTypeResponse)addResult.Entity;
+        return entityResult.Success();
     }
 
-    public async Task<bool> DeleteAsync(long id)
+    public async Task<Result<bool>> DeleteAsync(long id)
     {
         var entityOnDb = await entity.FirstOrDefaultAsync(x => x.PriorityTypeId == id);
 
         if (entityOnDb == null)
-            return false;
+            return Result<bool>.Failure(Messages.EntityNameNotFoundByPropertyAndValue(_entityName, "id", $"{id}"));
 
         entityOnDb.IsDeleted = true;
-        await demoProjectApplicationContext.SaveChangesAsync();
+        var saveResult = await demoProjectApplicationContext.SaveChangesAsync() > 0;
 
-        return true;
+        return saveResult ? saveResult.Success() : saveResult.Failure(Messages.EntityNotDelete);
     }
 
-    public async Task<bool> DeleteAsync(string rowGuid)
+    public async Task<Result<bool>> DeleteAsync(string rowGuid)
     {
         var entityOnDb = await entity.FirstOrDefaultAsync(x => x.RowGuid == rowGuid);
 
         if (entityOnDb == null)
-            return false;
+            return Result<bool>.Failure(Messages.EntityNameNotFoundByPropertyAndValue(_entityName, "RowGuid", $"{rowGuid}"));
 
         entityOnDb.IsDeleted = true;
-        await demoProjectApplicationContext.SaveChangesAsync();
+        var saveResult = await demoProjectApplicationContext.SaveChangesAsync() > 0;
 
-        return true;
+        return saveResult ? saveResult.Success() : saveResult.Failure(Messages.EntityNotDelete);
     }
 
-    public async Task<List<PriorityTypeResponse>> GetAllAsync() 
+    public async Task<Result<List<PriorityTypeResponse>>> GetAllAsync() 
     {
         var result = entity.Select(x => (PriorityTypeResponse)x).ToList();
-        return result;
+        return result.Success();
     }
 
-    public async Task<PriorityTypeResponse?> GetByIdAsync(long id) 
+    public async Task<Result<PriorityTypeResponse?>> GetByIdAsync(long id) 
     {
         var result = await entity.Where(x => x.PriorityTypeId == id).Select(x => (PriorityTypeResponse)x).FirstOrDefaultAsync();
-        return result;
+        return result.Success();
     }
 
-    public async Task<PriorityTypeResponse?> GetByRowGuidAsync(string rowGuid) 
+    public async Task<Result<PriorityTypeResponse?>> GetByRowGuidAsync(string rowGuid) 
     {
         var result = await entity.Where(x => x.RowGuid == rowGuid).Select(x => (PriorityTypeResponse)x).FirstOrDefaultAsync();
-        return result;
+        return result.Success();
     }
 
-    public async Task<PriorityTypeResponse> UpdateAsync(PriorityTypeEntity priorityTypeEntity)
+    public async Task<Result<PriorityTypeResponse>> UpdateAsync(PriorityTypeEntity priorityTypeEntity)
     {
         var entityOnDb = await entity.FirstOrDefaultAsync(x => x.RowGuid == priorityTypeEntity.RowGuid) ?? 
             throw new Exception("Entidad no encontrada");
@@ -110,11 +114,12 @@ public class PriorityTypeEntityRepostory(DemoProjectApplicationContext demoProje
         entityOnDb.UpdatedBy = priorityTypeEntity.UpdatedBy;
         entityOnDb.UpdatedAt = DateTime.Now;
 
-        var result = await demoProjectApplicationContext.SaveChangesAsync();
+        var result = await demoProjectApplicationContext.SaveChangesAsync() > 0;
 
-        if (result > 0)
-            return (PriorityTypeResponse)entityOnDb;
+        if (!result)
+            return Result<PriorityTypeResponse>.Failure(Messages.EntityNotUpdate);
 
-        return new();
+        var entityResult = (PriorityTypeResponse)entityOnDb;
+        return entityResult.Success();
     }
 }

@@ -1,6 +1,8 @@
-﻿using demo.proyect.application.Create;
+﻿using demo.proyect.application;
+using demo.proyect.application.Create;
 using demo.proyect.application.DTO_s;
 using demo.proyect.application.Repository;
+using demo.proyect.common.Helpers.Results;
 using demo.proyect.domain.Entities;
 using demo.proyect_persistance.Context;
 using Microsoft.EntityFrameworkCore;
@@ -11,35 +13,36 @@ public class ProjectDevelopmentTypeRepository(DemoProjectApplicationContext demo
 {
 
     private readonly DemoProjectApplicationContext demoProjectApplicationContext = demoProjectApplicationContext;
-    private readonly DbSet<ProjectDevelopmentTypeEntity> projectDevelopmentTypeEntities = demoProjectApplicationContext.ProjectDevelopmentTypeEntities;
+    private readonly DbSet<ProjectDevelopmentTypeEntity> entity = demoProjectApplicationContext.ProjectDevelopmentTypeEntities;
+    private const string _entityName = "Tipo_desarrollo";
 
-    public async Task<bool> ActiveInactiveAsync(long id)
+    public async Task<Result<bool>> ActiveInactiveAsync(long id)
     {
-        var entityOnDb = await projectDevelopmentTypeEntities.FirstOrDefaultAsync(x => x.ProjectDevelopmentTypeId == id);
+        var entityOnDb = await entity.FirstOrDefaultAsync(x => x.ProjectDevelopmentTypeId == id);
 
         if (entityOnDb == null)
-            return false;
+            return Result<bool>.Failure(Messages.EntityNameNotFoundByPropertyAndValue(_entityName, "id", $"{id}"));
 
         entityOnDb.IsActive = !entityOnDb.IsActive;
-        var result = await demoProjectApplicationContext.SaveChangesAsync();
+        var saveResult = await demoProjectApplicationContext.SaveChangesAsync() > 0;
 
-        return result > 0;
+        return saveResult ? saveResult.Success() : saveResult.Failure(Messages.EntityNotUpdate);
     }
 
-    public async Task<bool> ActiveInactiveAsync(string rowGuid)
+    public async Task<Result<bool>> ActiveInactiveAsync(string rowGuid)
     {
-        var entityOnDb = await projectDevelopmentTypeEntities.FirstOrDefaultAsync(x => x.RowGuid == rowGuid);
+        var entityOnDb = await entity.FirstOrDefaultAsync(x => x.RowGuid == rowGuid);
 
         if (entityOnDb == null)
-            return false;
+            return Result<bool>.Failure(Messages.EntityNameNotFoundByPropertyAndValue(_entityName, "RowGuid", $"{rowGuid}"));
 
         entityOnDb.IsActive = !entityOnDb.IsActive;
-        await demoProjectApplicationContext.SaveChangesAsync();
+        var saveResult = await demoProjectApplicationContext.SaveChangesAsync() > 0;
 
-        return true;
+        return saveResult ? saveResult.Success() : saveResult.Failure(Messages.EntityNotUpdate);
     }
 
-    public async Task<ProjectDevelopmentTypeResponse> AddAsync(ProjectDevelopmentTypeCreate priorityTypeEntity)
+    public async Task<Result<ProjectDevelopmentTypeResponse>> AddAsync(ProjectDevelopmentTypeCreate priorityTypeEntity)
     {
         var newEntity = new ProjectDevelopmentTypeEntity()
         {
@@ -47,63 +50,66 @@ public class ProjectDevelopmentTypeRepository(DemoProjectApplicationContext demo
             Description = priorityTypeEntity.Description,
             CreatedBy = priorityTypeEntity.CreateBy
         };
-        var result = await projectDevelopmentTypeEntities.AddAsync(newEntity);
-        var save = await demoProjectApplicationContext.SaveChangesAsync();
+        var addResult = await entity.AddAsync(newEntity);
+        var saveResult = await demoProjectApplicationContext.SaveChangesAsync() > 0;
 
-        if (save > 0)
-            return (ProjectDevelopmentTypeResponse)result.Entity;
+        if (!saveResult)
+            return Result<ProjectDevelopmentTypeResponse>.Failure(Messages.EntityNotCreated);
 
-        return new();
+        var entityResult = (ProjectDevelopmentTypeResponse)addResult.Entity;
+        return entityResult.Success();
     }
 
-    public async Task<bool> DeleteAsync(long id)
+    public async Task<Result<bool>> DeleteAsync(long id)
     {
-        var entityOnDb = await projectDevelopmentTypeEntities.FirstOrDefaultAsync(x => x.ProjectDevelopmentTypeId == id);
+        var entityOnDb = await entity.FirstOrDefaultAsync(x => x.ProjectDevelopmentTypeId == id);
 
         if (entityOnDb == null)
-            return false;
+            return Result<bool>.Failure(Messages.EntityNameNotFoundByPropertyAndValue(_entityName, "id", $"{id}"));
 
         entityOnDb.IsDeleted = true;
-        await demoProjectApplicationContext.SaveChangesAsync();
+        var saveResult = await demoProjectApplicationContext.SaveChangesAsync() > 0;
 
-        return true;
+        return saveResult ? saveResult.Success() : saveResult.Failure(Messages.EntityNotDelete);
     }
 
-    public async Task<bool> DeleteAsync(string rowGuid)
+    public async Task<Result<bool>> DeleteAsync(string rowGuid)
     {
-        var entityOnDb = await projectDevelopmentTypeEntities.FirstOrDefaultAsync(x => x.RowGuid == rowGuid);
+        var entityOnDb = await entity.FirstOrDefaultAsync(x => x.RowGuid == rowGuid);
 
         if (entityOnDb == null)
-            return false;
+            return Result<bool>.Failure(Messages.EntityNameNotFoundByPropertyAndValue(_entityName, "RowGuid", $"{rowGuid}"));
 
         entityOnDb.IsDeleted = true;
-        await demoProjectApplicationContext.SaveChangesAsync();
+        var saveResult = await demoProjectApplicationContext.SaveChangesAsync() > 0;
 
-        return true;
+        return saveResult ? saveResult.Success() : saveResult.Failure(Messages.EntityNotDelete);
     }
 
-    public async Task<List<ProjectDevelopmentTypeResponse>> GetAllAsync()
+    public async Task<Result<List<ProjectDevelopmentTypeResponse>>> GetAllAsync()
     {
-        var result = projectDevelopmentTypeEntities.Select(x => (ProjectDevelopmentTypeResponse)x).ToList();
-        return result;
+        var result = entity.Select(x => (ProjectDevelopmentTypeResponse)x).ToList();
+        return result.Success();
     }
 
-    public async Task<ProjectDevelopmentTypeResponse?> GetByIdAsync(long id)
+    public async Task<Result<ProjectDevelopmentTypeResponse?>> GetByIdAsync(long id)
     {
-        var result = await projectDevelopmentTypeEntities.Where(x => x.ProjectDevelopmentTypeId == id).Select(x => (ProjectDevelopmentTypeResponse)x).FirstOrDefaultAsync();
-        return result;
+        var result = await entity.Where(x => x.ProjectDevelopmentTypeId == id).Select(x => (ProjectDevelopmentTypeResponse)x).FirstOrDefaultAsync();
+        return result.Success();
     }
 
-    public async Task<ProjectDevelopmentTypeResponse?> GetByRowGuidAsync(string rowGuid)
+    public async Task<Result<ProjectDevelopmentTypeResponse?>> GetByRowGuidAsync(string rowGuid)
     {
-        var result = await projectDevelopmentTypeEntities.Where(x => x.RowGuid == rowGuid).Select(x => (ProjectDevelopmentTypeResponse)x).FirstOrDefaultAsync();
-        return result;
+        var result = await entity.Where(x => x.RowGuid == rowGuid).Select(x => (ProjectDevelopmentTypeResponse)x).FirstOrDefaultAsync();
+        return result.Success();
     }
 
-    public async Task<ProjectDevelopmentTypeResponse> UpdateAsync(ProjectDevelopmentTypeEntity projectDevelopmentTypeEntity)
+    public async Task<Result<ProjectDevelopmentTypeResponse>> UpdateAsync(ProjectDevelopmentTypeEntity projectDevelopmentTypeEntity)
     {
-        var entityOnDb = await projectDevelopmentTypeEntities.FirstOrDefaultAsync(x => x.RowGuid == projectDevelopmentTypeEntity.RowGuid) ??
-            throw new Exception("Entidad no encontrada");
+        var entityOnDb = await entity.FirstOrDefaultAsync(x => x.RowGuid == projectDevelopmentTypeEntity.RowGuid);
+
+        if(entityOnDb is null)
+            return Result<ProjectDevelopmentTypeResponse>.Failure(Messages.EntityNotFound);
 
         entityOnDb.Name = projectDevelopmentTypeEntity.Name;
         entityOnDb.Description = projectDevelopmentTypeEntity.Description;
@@ -111,11 +117,12 @@ public class ProjectDevelopmentTypeRepository(DemoProjectApplicationContext demo
         entityOnDb.UpdatedBy = projectDevelopmentTypeEntity.UpdatedBy;
         entityOnDb.UpdatedAt = DateTime.Now;
 
-        var result = await demoProjectApplicationContext.SaveChangesAsync();
+        var saveResult = await demoProjectApplicationContext.SaveChangesAsync() > 0;
 
-        if (result > 0)
-            return (ProjectDevelopmentTypeResponse)entityOnDb;
+        if (!saveResult)
+            return Result<ProjectDevelopmentTypeResponse>.Failure(Messages.EntityNotUpdate);
 
-        return new();
+        var entityResult = (ProjectDevelopmentTypeResponse)entityOnDb;
+        return entityResult.Success();
     }
 }

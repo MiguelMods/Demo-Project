@@ -6,13 +6,13 @@ namespace demo.proyect.application.Repository;
 
 public interface IPriorityTypeEntityRepostory
 {
-    Task<List<PriorityTypeResponse>> GetAllAsync();
-    Task<PriorityTypeResponse?> GetByIdAsync(long id);
-    Task<PriorityTypeResponse?> GetByRowGuidAsync(string rowGuid);
-    Task<PriorityTypeResponse> AddAsync(PriorityTypeCreate priorityTypeEntity);
-    Task<PriorityTypeResponse> UpdateAsync(PriorityTypeEntity priorityTypeEntity);
-    Task<bool> ActiveInactiveAsync(long id);
-    Task<bool> ActiveInactiveAsync(string rowGuid);
-    Task<bool> DeleteAsync(long id);
-    Task<bool> DeleteAsync(string rowGuid);
+    Task<Result<List<PriorityTypeResponse>>> GetAllAsync();
+    Task<Result<PriorityTypeResponse?>> GetByIdAsync(long id);
+    Task<Result<PriorityTypeResponse?>> GetByRowGuidAsync(string rowGuid);
+    Task<Result<PriorityTypeResponse>> AddAsync(PriorityTypeCreate priorityTypeEntity);
+    Task<Result<PriorityTypeResponse>> UpdateAsync(PriorityTypeEntity priorityTypeEntity);
+    Task<Result<bool>> ActiveInactiveAsync(long id);
+    Task<Result<bool>> ActiveInactiveAsync(string rowGuid);
+    Task<Result<bool>> DeleteAsync(long id);
+    Task<Result<bool>> DeleteAsync(string rowGuid);
 }
