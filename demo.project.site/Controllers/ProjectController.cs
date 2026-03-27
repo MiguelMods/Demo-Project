@@ -1,10 +1,12 @@
 ﻿using demo.project.site.Models.ViewModels;
 using demo.proyect.application.Repository;
 using demo.proyect.application.Services.Contract;
+using Microsoft.AspNetCore.Antiforgery;
 using Microsoft.AspNetCore.Mvc;
 
 namespace demo.project.site.Controllers
 {
+    [RequireAntiforgeryToken]
     public class ProjectController(IUnitOfWork unitOfWork) : Controller
     {
         private readonly IUnitOfWork unitOfWork = unitOfWork;

@@ -1,13 +1,19 @@
 using demo.proyect.application.Services.Contract;
 using demo.proyect.application.Services.Implementation;
 using demo.proyect_persistance;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews(options =>
+{
+    options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
+});
 builder.Services.AddPersistance(builder.Configuration);
 builder.Services.AddScoped<IProjectInitativeService, ProjectInitativeService>();
+builder.Services.AddAntiforgery();
 
 var app = builder.Build();
 
@@ -20,10 +26,11 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
 app.UseRouting();
 
 app.UseAuthorization();
-
+app.UseAntiforgery();
 app.MapStaticAssets();
 
 app.MapControllerRoute(
