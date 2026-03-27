@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using demo.proyect_persistance.Context;
 
@@ -11,9 +12,11 @@ using demo.proyect_persistance.Context;
 namespace demo.proyect_persistance.Migrations
 {
     [DbContext(typeof(DemoProjectApplicationContext))]
-    partial class DemoProjectApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20260327153751_addingUserTable")]
+    partial class addingUserTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1256,59 +1259,6 @@ namespace demo.proyect_persistance.Migrations
                     b.ToTable("usuarios", "dbo");
                 });
 
-            modelBuilder.Entity("demo.proyect.domain.Entities.UsersProfilesEntity", b =>
-                {
-                    b.Property<long>("UserId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("ProfileId")
-                        .HasColumnType("bigint");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("GETDATE()");
-
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<bool>("IsActive")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(true);
-
-                    b.Property<bool>("IsDeleted")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
-
-                    b.Property<string>("RowGuid")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(450)")
-                        .HasDefaultValueSql("NEWID()");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .ValueGeneratedOnUpdate()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("GETDATE()");
-
-                    b.Property<string>("UpdatedBy")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.HasKey("UserId", "ProfileId");
-
-                    b.HasIndex("ProfileId");
-
-                    b.HasIndex("RowGuid")
-                        .IsUnique();
-
-                    b.ToTable("usuarios_perfiles", "dbo");
-                });
-
             modelBuilder.Entity("demo.proyect.domain.Entities.ActionPlanEntity", b =>
                 {
                     b.HasOne("demo.proyect.domain.Entities.InitiativeEntity", "Initiative")
@@ -1456,25 +1406,6 @@ namespace demo.proyect_persistance.Migrations
                     b.Navigation("SubArea");
                 });
 
-            modelBuilder.Entity("demo.proyect.domain.Entities.UsersProfilesEntity", b =>
-                {
-                    b.HasOne("demo.proyect.domain.Entities.ProfileEntity", "Profile")
-                        .WithMany("UsersProfilesEntities")
-                        .HasForeignKey("ProfileId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("demo.proyect.domain.Entities.UserEntity", "User")
-                        .WithMany("UsersProfilesEntities")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Profile");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("demo.proyect.domain.Entities.AreaEntity", b =>
                 {
                     b.Navigation("SubAreasEntities");
@@ -1490,19 +1421,9 @@ namespace demo.proyect_persistance.Migrations
                     b.Navigation("ActionPlanEntities");
                 });
 
-            modelBuilder.Entity("demo.proyect.domain.Entities.ProfileEntity", b =>
-                {
-                    b.Navigation("UsersProfilesEntities");
-                });
-
             modelBuilder.Entity("demo.proyect.domain.Entities.ProjectEntity", b =>
                 {
                     b.Navigation("Goals");
-                });
-
-            modelBuilder.Entity("demo.proyect.domain.Entities.UserEntity", b =>
-                {
-                    b.Navigation("UsersProfilesEntities");
                 });
 #pragma warning restore 612, 618
         }

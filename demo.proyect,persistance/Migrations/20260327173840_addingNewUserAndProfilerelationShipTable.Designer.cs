@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using demo.proyect_persistance.Context;
 
@@ -11,9 +12,11 @@ using demo.proyect_persistance.Context;
 namespace demo.proyect_persistance.Migrations
 {
     [DbContext(typeof(DemoProjectApplicationContext))]
-    partial class DemoProjectApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20260327173840_addingNewUserAndProfilerelationShipTable")]
+    partial class addingNewUserAndProfilerelationShipTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
