@@ -71,12 +71,12 @@ namespace demo.project.site.Controllers
             var projectType = await unitOfWork.ProjectTypeRepository.GetAllAsync();
             var projectDevelopmentType = await unitOfWork.ProjectDevelopmentTypeRepository.GetAllAsync();
 
-            var areaSelectOption = area.Select(x => new SelectOption(x.AreaId, x.Name)).ToList();
+            var areaSelectOption = area.Data.Select(x => new SelectOption(x.AreaId, x.Name)).ToList();
             ViewBag.Area = areaSelectOption;
             ViewBag.SubArea = areaSelectOption;
-            ViewBag.Priority = priority.Select(x => new SelectOption(x.PriorityTypeId, x.Name)).ToList();
-            ViewBag.ProjectType = projectType.Select(x => new SelectOption(x.ProjectTypeId, x.Name)).ToList();
-            ViewBag.ProjectDevelopmentType = projectDevelopmentType.Select(x => new SelectOption(x.ProjectDevelopmentTypeId, x.Name)).ToList();
+            ViewBag.Priority = priority.Data.Select(x => new SelectOption(x.PriorityTypeId, x.Name)).ToList();
+            ViewBag.ProjectType = projectType.Data.Select(x => new SelectOption(x.ProjectTypeId, x.Name)).ToList();
+            ViewBag.ProjectDevelopmentType = projectDevelopmentType.Data.Select(x => new SelectOption(x.ProjectDevelopmentTypeId, x.Name)).ToList();
         }
     }
 }

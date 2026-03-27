@@ -13,7 +13,7 @@ public class AreaController(IUnitOfWork unitOfWork) : Controller
     public async Task<IActionResult> Index()
     {
         var areas = await unitOfWork.AreaEntityRepository.GetAllAsync();
-        return View(areas);
+        return View(areas.Data);
     }
 
     public async Task<IActionResult> Register()
@@ -26,11 +26,11 @@ public class AreaController(IUnitOfWork unitOfWork) : Controller
     {
         var area = await unitOfWork.AreaEntityRepository.GetByRowGuidAsync(rowguid);
 
-        if (area == null)
+        if (!area.IsSuccess)
             return await Index();
 
         await Load();
-        return View((AreaViewModel)area);
+        return View((AreaViewModel)area.Data);
     }
 
     [HttpPost]
@@ -45,16 +45,16 @@ public class AreaController(IUnitOfWork unitOfWork) : Controller
             var result = await unitOfWork.AreaEntityRepository.UpdateAsync(AreaViewModel.MapUpdate(areaViewModel));
 
             await Load();
-            if (result != null || result?.AreaId > 0)
-                return View("detail", (AreaViewModel)result);
+            if (result.IsSuccess)
+                return View("detail", (AreaViewModel)result.Data);
         }
         else 
         {
             areaViewModel.CreatedBy = "me";
             var result = await unitOfWork.AreaEntityRepository.AddAsync(AreaViewModel.MapCreate(areaViewModel));
             await Load();
-            if (result != null || result?.AreaId > 0)
-                return View("detail", (AreaViewModel)result);
+            if (result.IsSuccess)
+                return View("detail", (AreaViewModel)result.Data);
         }
 
         return await Index();
@@ -63,6 +63,8 @@ public class AreaController(IUnitOfWork unitOfWork) : Controller
     public async Task Load() 
     {
         var listOfAreas = await unitOfWork.AreaEntityRepository.GetAllAsync();
-        ViewBag.listOfAreas = listOfAreas.Select(x => new SelectOption(x.AreaId, x.Name)).ToList();
+        
+        if(listOfAreas.IsSuccess)
+            ViewBag.listOfAreas = listOfAreas.Data.Select(x => new SelectOption(x.AreaId, x.Name)).ToList();
     }
 }
