@@ -1,6 +1,7 @@
 using demo.proyect.application.Services.Contract;
 using demo.proyect.application.Services.Implementation;
 using demo.proyect_persistance;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 
@@ -11,6 +12,17 @@ builder.Services.AddControllersWithViews(options =>
 {
     options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
 });
+
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
+        options.SlidingExpiration = true;
+        options.LoginPath = "/account/index";
+        options.AccessDeniedPath = "/account/logut";
+        options.LogoutPath = "/account/logut";
+    });
+
 builder.Services.AddPersistance(builder.Configuration);
 builder.Services.AddScoped<IProjectInitativeService, ProjectInitativeService>();
 builder.Services.AddAntiforgery();
@@ -29,6 +41,7 @@ app.UseHttpsRedirection();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 app.UseAntiforgery();
 app.MapStaticAssets();

@@ -1,0 +1,50 @@
+﻿@model LoginViewModel
+
+@{
+    Layout = "_LoginLayout";
+    ViewData["Title"] = "Inicio de seccion";
+}
+
+<div class="d-flex justify-content-center align-items-center">
+    <div class="col-md-6 col-lg-6">
+        <form asp-action="login" method="post">
+            <div class="card shadow">
+                <div class="card-body m-2 p-4">
+                    <h4 class="text-center mb-4">Iniciar sesión</h4>
+                    <hr class="w-50 mx-auto mb-3" />
+                    <div class="mb-3">
+                        <label asp-for="UserName" class="form-label"></label>
+                        <input asp-for="UserName" class="form-control shadow-sm" placeholder="ejemplo: mmata, hcastillo, iisidro.........."/>
+                        <span asp-validation-for="UserName" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="Password" class="form-label"></label>
+                        <input asp-for="Password" class="form-control shadow-sm" placeholder="Contraseña............."/>
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3 d-flex justify-content-center gap-5">
+                        <div>
+                            <label asp-for="RememberMe" class="form-check-label"></label>
+                            <input asp-for="RememberMe" type="checkbox" class="form-check-input" />
+                        </div>
+                    </div>
+                    <div class="text-center mb-3">
+                        <a asp-action="#" class="text-decoration-none">¿Has olvidado tu contraseña?</a>
+                    </div>
+                    <div class="d-grid mt-2">
+                        <button class="btn offset-3 col-6 btn-primary shadow-sm">
+                            Iniciar sesión
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center mt-3">
+                <a asp-action="#" class="btn btn-outline-secondary border-0" title="Click Aqui para Abrir Ventana">¿No tienes aceso? Solicita tu Usuario Aqui</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
