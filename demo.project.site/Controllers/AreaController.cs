@@ -1,10 +1,12 @@
 ﻿using demo.project.site.Models.ViewModels;
 using demo.proyect.application.Repository;
 using Microsoft.AspNetCore.Antiforgery;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace demo.project.site.Controllers;
 
+[Authorize]
 [RequireAntiforgeryToken]
 public class AreaController(IUnitOfWork unitOfWork) : Controller
 {

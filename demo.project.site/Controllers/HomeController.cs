@@ -1,9 +1,11 @@
 using demo.project.site.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
 namespace demo.project.site.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         public IActionResult Index()

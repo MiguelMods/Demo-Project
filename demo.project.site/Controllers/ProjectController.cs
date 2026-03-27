@@ -2,10 +2,12 @@
 using demo.proyect.application.Repository;
 using demo.proyect.application.Services.Contract;
 using Microsoft.AspNetCore.Antiforgery;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace demo.project.site.Controllers
 {
+    [Authorize]
     [RequireAntiforgeryToken]
     public class ProjectController(IUnitOfWork unitOfWork) : Controller
     {
