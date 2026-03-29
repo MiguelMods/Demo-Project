@@ -9,4 +9,5 @@ public interface IUnitOfWork
     IProjectRepository ProjectRepository { get; }
     IGoalRepository GoalRepository { get; }
     IInitiativeRepository InitiativeRepository { get; }
+    IUserRepository UserRepository { get; }
 }
