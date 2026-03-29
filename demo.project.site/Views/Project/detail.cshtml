@@ -1,165 +1,218 @@
 ﻿@model ProjectViewModel
 
-<div class="row">
-    <div class="col-12 pt-3 pb-3">
-        <form asp-controller="project" asp-action="post" method="POST">
-            @Html.AntiForgeryToken()
-            @Html.ValidationSummary()
-            <input asp-for="ProjectId" type="hidden" />
-            <input asp-for="RowGuid" type="hidden" />
-            <div class="border p-3" style="border-radius: 15px">
-                <div class="row g-3 mb-3">
-                    <div class="col-12">
-                        <div class="d-flex justify-content-between">
-                            <h4>Registro de Proyecto</h4>
-                            <button type="reset" class="btn btn-warning" title="Limpiar Formulario">Limpiar <i class="fa fa-clean"></i></button>
-                        </div>
+<div class="row justify-content-center">
+    <div class="col-12 col-xl-10">
+
+        <!-- Breadcrumb -->
+        <nav style="margin-bottom: 1rem;">
+            <ol style="display:flex; align-items:center; gap:6px; list-style:none; margin:0; padding:0; font-size:13px; color:#a1a1aa;">
+                <li><a asp-controller="Home" asp-action="Index" style="color:#a1a1aa; text-decoration:none;">Inicio</a></li>
+                <li style="color:#d4d4d8;">/</li>
+                <li><a asp-controller="Project" asp-action="Index" style="color:#a1a1aa; text-decoration:none;">Proyectos</a></li>
+                <li style="color:#d4d4d8;">/</li>
+                <li style="color:#52525b; font-weight:500;">@(Model.ProjectId == 0 ? "Nuevo proyecto" : "Editar proyecto")</li>
+            </ol>
+        </nav>
+
+        <div class="form-card">
+
+            <!-- Header -->
+            <div class="form-card-header">
+                <div class="form-card-header-left">
+                    <div class="form-card-icon">
+                        <i class="bi bi-kanban"></i>
+                    </div>
+                    <div>
+                        <p class="form-card-title">@(Model.ProjectId == 0 ? "Nuevo Proyecto" : "Editar Proyecto")</p>
+                        <p class="form-card-subtitle">Complete los campos para @(Model.ProjectId == 0 ? "registrar" : "actualizar") el proyecto</p>
                     </div>
                 </div>
-                <div class="row g-3 align-items-center mb-1">
-                    <div class="col-auto col-6">
-                        <label asp-for="CodeOne" class="form-label"></label>
-                        <input asp-for="CodeOne" class="form-control form-control-sm" />
-                        <span asp-validation-for="CodeOne" class="text-danger"></span>
-                    </div>
-                    <div class="col-auto col-6">
-                        <label asp-for="CodeTwo" class="form-label"></label>
-                        <input asp-for="CodeTwo" class="form-control form-control-sm" />
-                    </div>
-                </div>
-                <div class="row g-3 align-items-center mt-1 mb-1">
-                    <div class="col-auto col-12">
-                        <label asp-for="Name" class="form-label"></label>
-                        <input asp-for="Name" class="form-control form-control-sm" />
-                        <span asp-validation-for="Name" class="text-danger"></span>
-                    </div>
-                </div>
-                <div class="row g-3 align-items-center mt-1 mb-1">
-                    <div class="col-auto col-12">
-                        <label asp-for="Objetive" class="form-label"></label>
-                        <input asp-for="Objetive" class="form-control form-control-sm" />
-                        <span asp-validation-for="Objetive" class="text-danger"></span>
-                    </div>
-                </div>
-                <div class="row g-3 align-items-center mt-1 mb-1">
-                    <div class="col-auto col-12">
-                        <label asp-for="Scope" class="form-label"></label>
-                        <input asp-for="Scope" class="form-control form-control-sm" />
-                        <span asp-validation-for="Scope" class="text-danger"></span>
-                    </div>
-                </div>
-                <div class="row g-3 align-items-center mt-1 mb-1">
-                    <div class="col-auto col-12">
-                        <label asp-for="Description" class="form-label"></label>
-                        <input asp-for="Description" class="form-control form-control-sm" />
-                        <span asp-validation-for="Description" class="text-danger"></span>
-                    </div>
-                </div>
-                <div class="row g-3 align-items-center mt-1 mb-1">
-                    <div class="col-auto col-12">
-                        <label asp-for="Area" class="form-label"></label>
-                        <select asp-for="AreaId" class="form-select form-select-sm">
-                            <option value="0">Seleccione una Opcion</option>
-                            @foreach (var option in ((List<SelectOption>)ViewBag.Area))
-                            {
-                                <option value="@option.Value">@option.Text.ToUpper()</option>
-                            }
-                        </select>
-                        <span asp-validation-for="AreaId" class="text-danger"></span>
-                    </div>
-                </div>
-                <div class="row g-3 align-items-center mt-1 mb-1">
-                    <div class="col-auto col-12">
-                        <label asp-for="SubArea" class="form-label"></label>
-                        <select asp-for="SubAreaId" class="form-select form-select-sm">
-                            <option value="0">Seleccione una Opcion</option>
-                            @foreach (var option in ((List<SelectOption>)ViewBag.SubArea))
-                            {
-                                <option value="@option.Value">@option.Text.ToUpper()</option>
-                            }
-                        </select>
-                        <span asp-validation-for="SubAreaId" class="text-danger"></span>
-                    </div>
-                </div>
-                <div class="row g-3 align-items-center mt-1 mb-1">
-                    <div class="col-auto col-12">
-                        <div class="d-flex gap-3">
-                            <label asp-for="PoaRoadMap" class="form-label"></label>
-                            <input asp-for="PoaRoadMap" type="checkbox" class="form-check" />
-                        </div>
-                    </div>
-                </div>
-                <div class="row g-3 align-items-center mt-1 mb-1">
-                    <div class="col-auto col-12">
-                        <label asp-for="WishDate" class="form-label"></label>
-                        <input asp-for="WishDate" class="form-control form-control-sm" />
-                        <span asp-validation-for="WishDate" class="text-danger"></span>
-                    </div>
-                </div>
-                <div class="row g-3 align-items-center mt-1 mb-1">
-                    <div class="col-auto col-12">
-                        <div class="d-flex gap-3">
-                            <label asp-for="IsCritical" class="form-label"></label>
-                            <input asp-for="IsCritical" type="checkbox" class="form-check" />
-                        </div>
-                    </div>
-                </div>
-                <div class="row g-3 align-items-center mt-1 mb-1">
-                    <div class="col-auto col-12">
-                        <div class="d-flex gap-3">
-                            <label asp-for="UseNormalFlow" class="form-label"></label>
-                            <input asp-for="UseNormalFlow" type="checkbox" class="form-check" />
-                        </div>
-                    </div>
-                </div>
-                <div class="row g-3 align-items-center mt-1 mb-1">
-                    <div class="col-auto col-12">
-                        <label asp-for="PriorityTypeId" class="form-label"></label>
-                        <select asp-for="PriorityTypeId" class="form-select form-select-sm">
-                            <option value="0">Seleccione una Opcion</option>
-                            @foreach (var option in ((List<SelectOption>)ViewBag.Priority))
-                            {
-                                <option value="@option.Value">@option.Text.ToUpper()</option>
-                            }
-                        </select>
-                        <span asp-validation-for="PriorityTypeId" class="text-danger"></span>
-                    </div>
-                </div>
-                <div class="row g-3 align-items-center mt-1 mb-1">
-                    <div class="col-auto col-12">
-                        <label asp-for="ProjectTypeId" class="form-label"></label>
-                        <select asp-for="ProjectTypeId" class="form-select form-select-sm">
-                            <option value="0">Seleccione una Opcion</option>
-                            @foreach (var option in ((List<SelectOption>)ViewBag.ProjectType))
-                            {
-                                <option value="@option.Value">@option.Text.ToUpper()</option>
-                            }
-                        </select>
-                        <span asp-validation-for="ProjectTypeId" class="text-danger"></span>
-                    </div>
-                </div>
-                <div class="row g-3 align-items-center mt-1 mb-1">
-                    <div class="col-auto col-12">
-                        <label asp-for="ProjectDevelopmentTypeId" class="form-label"></label>
-                        <select asp-for="ProjectDevelopmentTypeId" class="form-select form-select-sm">
-                            <option value="0">Seleccione una Opcion</option>
-                            @foreach (var option in ((List<SelectOption>)ViewBag.ProjectType))
-                            {
-                                <option value="@option.Value">@option.Text.ToUpper()</option>
-                            }
-                        </select>
-                        <span asp-validation-for="ProjectDevelopmentTypeId" class="text-danger"></span>
-                    </div>
-                </div>
-                <div class="row g-3 mt-1 mb-1">
-                    <div class="col-auto col-12">
-                        <button class="btn btn-primary float-end w-50">Actualizar</button>
-                    </div>
-                </div>
+                <button type="reset" form="project-form" class="btn-ghost-custom">
+                    <i class="bi bi-arrow-counterclockwise" style="font-size:14px;"></i>
+                    Limpiar
+                </button>
             </div>
-        </form>
+
+            <!-- Body -->
+            <div class="form-card-body">
+                <form id="project-form" asp-controller="project" asp-action="post" method="POST">
+                    @Html.AntiForgeryToken()
+                    <input asp-for="ProjectId" type="hidden" />
+                    <input asp-for="RowGuid" type="hidden" />
+
+                    @Html.ValidationSummary(false, "", new { @class = "validation-summary-errors" })
+
+                    <!-- IDENTIFICACIÓN -->
+                    <div class="form-section">
+                        <div class="form-section-title">Identificación</div>
+                        <div class="form-grid form-grid-2">
+                            <div class="field-group">
+                                <label asp-for="CodeOne" class="field-label"></label>
+                                <input asp-for="CodeOne" class="form-control-custom" placeholder="Código principal" />
+                                <span asp-validation-for="CodeOne" class="field-error"></span>
+                            </div>
+                            <div class="field-group">
+                                <label asp-for="CodeTwo" class="field-label"></label>
+                                <input asp-for="CodeTwo" class="form-control-custom" placeholder="Código secundario" />
+                                <span asp-validation-for="CodeTwo" class="field-error"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- DESCRIPCIÓN -->
+                    <div class="form-section">
+                        <div class="form-section-title">Descripción</div>
+                        <div class="form-grid" style="gap: 1rem;">
+                            <div class="field-group">
+                                <label asp-for="Name" class="field-label"></label>
+                                <input asp-for="Name" class="form-control-custom" placeholder="Nombre del proyecto" />
+                                <span asp-validation-for="Name" class="field-error"></span>
+                            </div>
+                            <div class="field-group">
+                                <label asp-for="Objetive" class="field-label"></label>
+                                <input asp-for="Objetive" class="form-control-custom" placeholder="Objetivo principal" />
+                                <span asp-validation-for="Objetive" class="field-error"></span>
+                            </div>
+                            <div class="field-group">
+                                <label asp-for="Scope" class="field-label"></label>
+                                <input asp-for="Scope" class="form-control-custom" placeholder="Alcance del proyecto" />
+                                <span asp-validation-for="Scope" class="field-error"></span>
+                            </div>
+                            <div class="field-group">
+                                <label asp-for="Description" class="field-label"></label>
+                                <input asp-for="Description" class="form-control-custom" placeholder="Descripción detallada" />
+                                <span asp-validation-for="Description" class="field-error"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- CLASIFICACIÓN -->
+                    <div class="form-section">
+                        <div class="form-section-title">Clasificación</div>
+                        <div class="form-grid form-grid-2">
+                            <div class="field-group">
+                                <label asp-for="Area" class="field-label"></label>
+                                <select asp-for="AreaId" class="form-select-custom">
+                                    <option value="0">Seleccione un área</option>
+                                    @foreach (var option in ((List<SelectOption>)ViewBag.Area))
+                                    {
+                                        <option value="@option.Value">@option.Text.ToUpper()</option>
+                                    }
+                                </select>
+                                <span asp-validation-for="AreaId" class="field-error"></span>
+                            </div>
+                            <div class="field-group">
+                                <label asp-for="SubArea" class="field-label"></label>
+                                <select asp-for="SubAreaId" class="form-select-custom">
+                                    <option value="0">Seleccione una subárea</option>
+                                    @foreach (var option in ((List<SelectOption>)ViewBag.SubArea))
+                                    {
+                                        <option value="@option.Value">@option.Text.ToUpper()</option>
+                                    }
+                                </select>
+                                <span asp-validation-for="SubAreaId" class="field-error"></span>
+                            </div>
+                            <div class="field-group">
+                                <label asp-for="PriorityTypeId" class="field-label"></label>
+                                <select asp-for="PriorityTypeId" class="form-select-custom">
+                                    <option value="0">Seleccione prioridad</option>
+                                    @foreach (var option in ((List<SelectOption>)ViewBag.Priority))
+                                    {
+                                        <option value="@option.Value">@option.Text.ToUpper()</option>
+                                    }
+                                </select>
+                                <span asp-validation-for="PriorityTypeId" class="field-error"></span>
+                            </div>
+                            <div class="field-group">
+                                <label asp-for="ProjectTypeId" class="field-label"></label>
+                                <select asp-for="ProjectTypeId" class="form-select-custom">
+                                    <option value="0">Seleccione tipo</option>
+                                    @foreach (var option in ((List<SelectOption>)ViewBag.ProjectType))
+                                    {
+                                        <option value="@option.Value">@option.Text.ToUpper()</option>
+                                    }
+                                </select>
+                                <span asp-validation-for="ProjectTypeId" class="field-error"></span>
+                            </div>
+                            <div class="field-group">
+                                <label asp-for="ProjectDevelopmentTypeId" class="field-label"></label>
+                                <select asp-for="ProjectDevelopmentTypeId" class="form-select-custom">
+                                    <option value="0">Seleccione tipo de desarrollo</option>
+                                    @foreach (var option in ((List<SelectOption>)ViewBag.ProjectType))
+                                    {
+                                        <option value="@option.Value">@option.Text.ToUpper()</option>
+                                    }
+                                </select>
+                                <span asp-validation-for="ProjectDevelopmentTypeId" class="field-error"></span>
+                            </div>
+                            <div class="field-group">
+                                <label asp-for="WishDate" class="field-label"></label>
+                                <input asp-for="WishDate" type="date" class="form-control-custom" />
+                                <span asp-validation-for="WishDate" class="field-error"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- OPCIONES -->
+                    <div class="form-section">
+                        <div class="form-section-title">Opciones</div>
+                        <div class="form-grid" style="gap: 10px;">
+
+                            <label class="toggle-group" for="PoaRoadMap">
+                                <div>
+                                    <div class="toggle-label">@Html.DisplayNameFor(m => m.PoaRoadMap)</div>
+                                    <div class="toggle-desc">Indicar si pertenece al POA o RoadMap</div>
+                                </div>
+                                <label class="switch">
+                                    <input asp-for="PoaRoadMap" type="checkbox" />
+                                    <span class="switch-slider"></span>
+                                </label>
+                            </label>
+
+                            <label class="toggle-group" for="IsCritical">
+                                <div>
+                                    <div class="toggle-label">@Html.DisplayNameFor(m => m.IsCritical)</div>
+                                    <div class="toggle-desc">Marcar si el proyecto es crítico para la organización</div>
+                                </div>
+                                <label class="switch">
+                                    <input asp-for="IsCritical" type="checkbox" />
+                                    <span class="switch-slider"></span>
+                                </label>
+                            </label>
+
+                            <label class="toggle-group" for="UseNormalFlow">
+                                <div>
+                                    <div class="toggle-label">@Html.DisplayNameFor(m => m.UseNormalFlow)</div>
+                                    <div class="toggle-desc">Usar el flujo de aprobación estándar</div>
+                                </div>
+                                <label class="switch">
+                                    <input asp-for="UseNormalFlow" type="checkbox" />
+                                    <span class="switch-slider"></span>
+                                </label>
+                            </label>
+
+                        </div>
+                    </div>
+
+                    <!-- ACTIONS -->
+                    <div style="display:flex; justify-content:flex-end; gap:10px; padding-top: 1rem; border-top: 1px solid #f0f0f2;">
+                        <a asp-controller="Project" asp-action="Index" class="btn-ghost-custom">
+                            <i class="bi bi-x" style="font-size:16px;"></i>
+                            Cancelar
+                        </a>
+                        <button type="submit" class="btn-primary-custom">
+                            <i class="bi bi-check2" style="font-size:16px;"></i>
+                            @(Model.ProjectId == 0 ? "Registrar proyecto" : "Guardar cambios")
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+
     </div>
 </div>
+
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }
