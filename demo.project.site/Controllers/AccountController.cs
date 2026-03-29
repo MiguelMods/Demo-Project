@@ -1,15 +1,54 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using demo.project.site.Models.ViewModels;
+using demo.proyect.application.Services.Contract;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace demo.project.site.Controllers
 {
     [AllowAnonymous]
-    public class AccountController : Controller
+    public class AccountController(IUserService userService) : Controller
     {
-        [HttpGet("")]
-        public IActionResult Index()
+        private readonly IUserService userService = userService;
+
+        public IActionResult Index(string returnUrl = "")
+        {
+            if (!string.IsNullOrEmpty(returnUrl))
+                ViewBag.UrlComeFrom = returnUrl;
+
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Login(LoginViewModel model) 
+        {
+            if(!ModelState.IsValid)
+                return View("index", model);
+
+            var result = await userService.SiginAsync(model.UserName, model.Password);
+
+            if (!result.IsSuccess) 
+            {
+                ModelState.AddModelError(nameof(model.UserName), result.Message);
+                return View("index", model);
+            }
+
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, result.Data);
+
+            return Redirect("/home/index");
+        }
+
+        public async Task<IActionResult> AccessDenied() 
         {
             return View();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync();
+            return RedirectToAction("index");
         }
     }
 }

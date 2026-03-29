@@ -1,0 +1,19 @@
+﻿@model LoginViewModel
+
+@{
+    Layout = "_LoginLayout";
+    ViewData["Title"] = "Accion no es Validad";
+}
+
+<div class="d-flex justify-content-center align-items-center fadeInUp-animation">
+    <div class="col-md-6 col-lg-6">
+        <form id="form-login" asp-action="login" method="post" oninvalid="">
+            @Html.AntiForgeryToken()
+            <div class="card shadow">
+                <div class="card-body m-2 p-4">
+                    <h4 class="text-center mb-4">Debe haber iniciado secion antes.</h4>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

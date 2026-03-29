@@ -2,48 +2,104 @@
 
 @{
     Layout = "_LoginLayout";
-    ViewData["Title"] = "Inicio de seccion";
+    ViewData["Title"] = "Inicio de sesión";
 }
 
-<div class="d-flex justify-content-center align-items-center">
-    <div class="col-md-6 col-lg-6">
-        <form asp-action="login" method="post">
-            <div class="card shadow">
-                <div class="card-body m-2 p-4">
-                    <h4 class="text-center mb-4">Iniciar sesión</h4>
-                    <hr class="w-50 mx-auto mb-3" />
-                    <div class="mb-3">
-                        <label asp-for="UserName" class="form-label"></label>
-                        <input asp-for="UserName" class="form-control shadow-sm" placeholder="ejemplo: mmata, hcastillo, iisidro.........."/>
-                        <span asp-validation-for="UserName" class="text-danger"></span>
-                    </div>
-                    <div class="mb-3">
-                        <label asp-for="Password" class="form-label"></label>
-                        <input asp-for="Password" class="form-control shadow-sm" placeholder="Contraseña............."/>
-                        <span asp-validation-for="Password" class="text-danger"></span>
-                    </div>
-                    <div class="mb-3 d-flex justify-content-center gap-5">
-                        <div>
-                            <label asp-for="RememberMe" class="form-check-label"></label>
-                            <input asp-for="RememberMe" type="checkbox" class="form-check-input" />
-                        </div>
-                    </div>
-                    <div class="text-center mb-3">
-                        <a asp-action="#" class="text-decoration-none">¿Has olvidado tu contraseña?</a>
-                    </div>
-                    <div class="d-grid mt-2">
-                        <button class="btn offset-3 col-6 btn-primary shadow-sm">
-                            Iniciar sesión
-                        </button>
-                    </div>
+<div class="login-bg"></div>
+
+<div class="login-wrapper">
+
+    <!-- Brand -->
+    <a class="login-brand" asp-controller="Home" asp-action="Index">
+        <div class="login-brand-icon">
+            <i class="bi bi-hexagon-fill"></i>
+        </div>
+        <span class="login-brand-name">Demo App</span>
+    </a>
+
+    <!-- Card -->
+    <div class="login-card">
+        <div class="login-card-header">
+            <p class="login-card-title">Bienvenido de vuelta</p>
+            <p class="login-card-desc">Ingresa tus credenciales para continuar</p>
+        </div>
+
+        <form id="form-login" asp-action="login" method="post">
+            @Html.AntiForgeryToken()
+
+            <!-- Usuario -->
+            <div class="field-group">
+                <label asp-for="UserName" class="field-label"></label>
+                <div class="field-input-wrap">
+                    <input asp-for="UserName"
+                           class="field-input"
+                           placeholder="ej: mmata, hcastillo..."
+                           autocomplete="username" />
+                    <i class="bi bi-person field-icon"></i>
                 </div>
+                <span asp-validation-for="UserName" class="field-error"></span>
             </div>
-            <div class="text-center mt-3">
-                <a asp-action="#" class="btn btn-outline-secondary border-0" title="Click Aqui para Abrir Ventana">¿No tienes aceso? Solicita tu Usuario Aqui</a>
+
+            <!-- Contraseña -->
+            <div class="field-group">
+                <label asp-for="Password" class="field-label"></label>
+                <div class="field-input-wrap">
+                    <input asp-for="Password"
+                           id="pwd-input"
+                           class="field-input"
+                           type="password"
+                           placeholder="Contraseña"
+                           autocomplete="current-password" />
+                    <i class="bi bi-lock field-icon"></i>
+                    <button type="button" class="pwd-toggle" onclick="togglePwd()" title="Mostrar/ocultar">
+                        <i class="bi bi-eye" id="pwd-icon"></i>
+                    </button>
+                </div>
+                <span asp-validation-for="Password" class="field-error"></span>
             </div>
+
+            <!-- Remember + Forgot -->
+            <div class="login-meta">
+                <label class="remember-group">
+                    <label class="mini-switch">
+                        <input asp-for="RememberMe" type="checkbox" />
+                        <span class="mini-switch-slider"></span>
+                    </label>
+                    <span class="remember-label">@Html.DisplayNameFor(m => m.RememberMe)</span>
+                </label>
+                <a href="#" class="forgot-link">¿Olvidaste tu contraseña?</a>
+            </div>
+
+            <!-- Submit -->
+            <button type="submit" class="btn-login">
+                <i class="bi bi-box-arrow-in-right" style="font-size:15px;"></i>
+                Iniciar sesión
+            </button>
+
+            @Html.ValidationSummary(false, "", new { @class = "validation-summary-errors" })
+
         </form>
     </div>
+
+    <!-- Footer -->
+    <div class="login-footer">
+        <a href="#" class="login-footer-link">
+            <i class="bi bi-person-plus" style="font-size:13px;"></i>
+            ¿No tienes acceso? Solicita tu usuario aquí
+        </a>
+    </div>
+
 </div>
+
+<script>
+    function togglePwd() {
+        const input = document.getElementById('pwd-input');
+        const icon = document.getElementById('pwd-icon');
+        const isHidden = input.type === 'password';
+        input.type = isHidden ? 'text' : 'password';
+        icon.className = isHidden ? 'bi bi-eye-slash' : 'bi bi-eye';
+    }
+</script>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
