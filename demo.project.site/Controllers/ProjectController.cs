@@ -16,6 +16,10 @@ namespace demo.project.site.Controllers
         public async Task<IActionResult> Index()
         {
             var allProject = await unitOfWork.ProjectRepository.GetAllAsync();
+
+            if(!allProject.IsSuccess)
+                return View(new List<ProjectViewModel>());
+
             return View(allProject.Data);
         }
 
@@ -42,13 +46,15 @@ namespace demo.project.site.Controllers
             if (!ModelState.IsValid)
                 return RedirectToAction("register", projectViewModel);
 
+            var user = HttpContext.User.Identity.Name;
+
             if (projectViewModel.ProjectId > 0)
             {
-                var model = ProjectViewModel.Map(projectViewModel, "updated-by-me", projectViewModel.RowGuid);
+                var model = ProjectViewModel.Map(projectViewModel, user, projectViewModel.RowGuid);
                 var result = await unitOfWork.ProjectRepository.UpdateAsync(model);
 
                 if (!result.IsSuccess)
-                    ModelState.AddModelError("saveError", result.Message);
+                    ModelState.AddModelError(nameof(projectViewModel.Name), result.Message);
 
                 await Load();
 
@@ -56,13 +62,14 @@ namespace demo.project.site.Controllers
             }
             else
             {
-                var model = ProjectViewModel.Map(projectViewModel, "create-by-me");
+                var model = ProjectViewModel.Map(projectViewModel, user);
                 var result = await projectInitativeService.CreateAsync(model);
 
                 if (!result.IsSuccess)
-                    ModelState.AddModelError("saveError", result.Message);
+                    ModelState.AddModelError(nameof(projectViewModel.Name), result.Message);
 
-                return RedirectToAction("register");
+                await Load();
+                return View("register", projectViewModel);
             }
         }
 
