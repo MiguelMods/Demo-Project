@@ -1,0 +1,297 @@
+﻿@model ProjectGoalViewModel
+
+<div class="row justify-content-center">
+    <div class="col-12 col-xl-10">
+
+        <!-- Breadcrumb -->
+        <nav style="margin-bottom: 1rem;">
+            <ol style="display:flex; align-items:center; gap:6px; list-style:none; margin:0; padding:0; font-size:13px; color:#a1a1aa;">
+                <li><a asp-controller="Home" asp-action="Index" style="color:#a1a1aa; text-decoration:none;">Inicio</a></li>
+                <li style="color:#d4d4d8;">/</li>
+                <li><a asp-controller="Project" asp-action="Index" style="color:#a1a1aa; text-decoration:none;">Proyectos - Objetivo</a></li>
+                <li style="color:#d4d4d8;">/</li>
+                <li style="color:#52525b; font-weight:500;">Asignacion de Objetivos</li>
+            </ol>
+        </nav>
+
+        <div class="form-card">
+
+            <!-- Header -->
+            <div class="form-card-header">
+                <div class="form-card-header-left">
+                    <div class="form-card-icon">
+                        <i class="bi bi-kanban"></i>
+                    </div>
+                    <div>
+                        <p class="form-card-title">Asignacion de Objetivos al Proyecto <strong>@Model.Project.CodeOne - @Model.Project.Name</strong></p>
+                        <p class="form-card-subtitle">Complete los campos para registrar el objetivo al Proyecto</p>
+                    </div>
+                </div>
+                <button type="reset" form="project-form" class="btn-ghost-custom">
+                    <i class="bi bi-arrow-counterclockwise" style="font-size:14px;"></i>
+                    Limpiar
+                </button>
+            </div>
+
+            <!-- Body -->
+            <div class="form-card-body">
+                <form id="project-form" asp-controller="goal" asp-action="post" method="POST">
+                    @Html.AntiForgeryToken()
+                    <input asp-for="Project.RowGuid" type="hidden" />
+                    <input asp-for="Project.ProjectId" type="hidden" />
+                    <input asp-for="GoalId" type="hidden" />
+                    <div asp-validation-summary="All"></div>
+                    <!-- DESCRIPCIÓN -->
+                    <div class="form-section">
+                        <div class="form-section-title">Informacion del Empleado</div>
+                        <div class="form-grid form-grid-2">
+                            <div class="field-group">
+                                <label asp-for="AreaId" class="field-label"></label>
+                                <select asp-for="AreaId" class="form-select-custom">
+                                    <option value="0">Seleccione un área</option>
+                                    @foreach (var option in ((List<SelectOption>)ViewBag.Area))
+                                    {
+                                        <option value="@option.Value">@option.Text.ToUpper()</option>
+                                    }
+                                </select>
+                                <span asp-validation-for="AreaId" class="field-error"></span>
+                            </div>
+                            <div class="field-group">
+                                <label asp-for="EmployeeId" class="field-label"></label>
+                                <select asp-for="EmployeeId" class="form-select-custom">
+                                    <option value="0">Seleccione un Empleado</option>
+                                    @foreach (var option in ((List<SelectOption>)ViewBag.Area))
+                                    {
+                                        <option value="@option.Value">@option.Text.ToUpper()</option>
+                                    }
+                                </select>
+                                <span asp-validation-for="AreaId" class="field-error"></span>
+                            </div>
+                        </div>
+                        <div class="form-section-title mt-4">Descripción</div>
+                        <div class="form-grid mt-3">
+                            <div class="field-group">
+                                <label asp-for="GoalTypeId" class="field-label"></label>
+                                <select asp-for="GoalTypeId" class="form-select-custom">
+                                    <option value="0">Seleccione un Tipo de Objetivo</option>
+                                    @foreach (var option in ((List<SelectOption>)ViewBag.GoalType))
+                                    {
+                                        <option value="@option.Value">@option.Text.ToUpper()</option>
+                                    }
+                                </select>
+                                <span asp-validation-for="PerspectiveId" class="field-error"></span>
+                            </div>
+                        </div>
+                        <div class="form-grid form-grid-2 mt-3">
+                            <div class="field-group">
+                                <label asp-for="Code" class="field-label"></label>
+                                <input asp-for="Code" class="form-control-custom" placeholder="Código principal" />
+                                <span asp-validation-for="Code" class="field-error"></span>
+                            </div>
+                            <div class="field-group">
+                                <label asp-for="Name" class="field-label"></label>
+                                <input asp-for="Name" class="form-control-custom" placeholder="Nombre del proyecto" />
+                                <span asp-validation-for="Name" class="field-error"></span>
+                            </div>
+                        </div>
+                        <div class="form-grid mt-2">
+                            <div class="field-group">
+                                <label asp-for="Description" class="field-label"></label>
+                                <textarea rows="3" asp-for="Description" class="form-contro-textareal-custom" placeholder="Descripción detallada"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-section">
+                        <div class="form-grid form-grid-2">
+                            <div class="field-group">
+                                <label asp-for="PeriodId" class="field-label"></label>
+                                <select asp-for="PeriodId" class="form-select-custom">
+                                    <option value="0">Seleccione un Periodo</option>
+                                    @foreach (var option in ((List<SelectOption>)ViewBag.Period))
+                                    {
+                                        <option value="@option.Value">@option.Text.ToUpper()</option>
+                                    }
+                                </select>
+                                <span asp-validation-for="PeriodId" class="field-error"></span>
+                            </div>
+                            <div class="field-group">
+                                <label asp-for="PerspectiveId" class="field-label"></label>
+                                <select asp-for="PerspectiveId" class="form-select-custom">
+                                    <option value="0">Seleccione un Perpectiva</option>
+                                    @foreach (var option in ((List<SelectOption>)ViewBag.Perspective))
+                                    {
+                                        <option value="@option.Value">@option.Text.ToUpper()</option>
+                                    }
+                                </select>
+                                <span asp-validation-for="PerspectiveId" class="field-error"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- SECCIÓN INICIATIVAS -->
+                    <div class="form-section">
+                        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:1rem;">
+                            <div class="form-section-title" style="margin:0; border:none; padding:0;">Iniciativas</div>
+                            <button type="button" class="btn-ghost-custom" onclick="addInitative()" style="height:30px; padding:0 12px; font-size:12px;">
+                                <i class="bi bi-plus" style="font-size:15px;"></i>
+                                Agregar iniciativa
+                            </button>
+                        </div>
+
+                        <div id="initatives-container">
+                            @if (Model.GoalInitatives != null && Model.GoalInitatives.Any())
+                            {
+                                @for (int i = 0; i < Model.GoalInitatives.Count; i++)
+                                {
+                                    <div class="initative-item" data-index="@i">
+                                        <div class="initative-item-header">
+                                            <span class="initative-index">Iniciativa #@(i + 1)</span>
+                                            <button type="button" class="btn-remove-initative" onclick="removeInitative(this)" title="Eliminar">
+                                                <i class="bi bi-trash3"></i>
+                                            </button>
+                                        </div>
+                                        <div class="form-grid form-grid-2">
+                                            <div class="field-group">
+                                                <label class="field-label">Nombre</label>
+                                                <input name="GoalInitatives[@i].Name"
+                                                       value="@Model.GoalInitatives[i].Name"
+                                                       class="form-control-custom"
+                                                       placeholder="Nombre de la iniciativa" />
+                                                <span class="field-error"></span>
+                                            </div>
+                                            <div class="field-group">
+                                                <label class="field-label">Descripción</label>
+                                                <textarea name="GoalInitatives[@i].Descripcion"
+                                                          class="form-control-custom"
+                                                          style="height:38px; resize:vertical; padding-top:9px;"
+                                                          placeholder="Descripción de la iniciativa">@Model.GoalInitatives[i].Descripcion</textarea>
+                                                <span class="field-error"></span>
+                                            </div>
+                                        </div>
+                                        <div class="form-grid mt-2" style="gap:10px;">
+                                            <label class="toggle-group">
+                                                <div>
+                                                    <div class="toggle-label">Es Ejecutable</div>
+                                                    <div class="toggle-desc">Indicar si es Ejecutable</div>
+                                                </div>
+                                                <label class="switch">
+                                                    <input name="GoalInitatives[@i].IsExecutable"
+                                                           type="checkbox"
+                                                           value="true"
+                                                           @(Model.GoalInitatives[i].IsExecutable ? "checked" : "") />
+                                                    <span class="switch-slider"></span>
+                                                </label>
+                                            </label>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                        </div>
+
+                        <div id="initatives-empty" style="@(Model.GoalInitatives != null && Model.GoalInitatives.Any() ? "display:none" : "")">
+                            <div style="padding: 1.5rem; text-align:center; border: 1px dashed #e4e4e7; border-radius:10px; color:#a1a1aa;">
+                                <i class="bi bi-list-task" style="font-size:22px; display:block; margin-bottom:6px; color:#d4d4d8;"></i>
+                                <span style="font-size:13px;">Sin iniciativas agregadas. Usa el botón para agregar.</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- ACTIONS -->
+                    <div style="display:flex; justify-content:flex-end; gap:10px; padding-top: 1rem; border-top: 0px solid #f0f0f2;">
+                        <a asp-controller="project" asp-action="detail" asp-route-rowguid="@Model.Project.RowGuid" class="btn-ghost-custom">
+                            <i class="bi bi-x" style="font-size:16px;"></i>
+                            Cancelar
+                        </a>
+                        <button type="submit" class="btn-primary-custom">
+                            <i class="bi bi-check2" style="font-size:16px;"></i>
+                            @(Model.GoalId == 0 ? "Registrar Objetivo" : "Actualizar Objetivo")
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+    let initativeCount = @(Model.GoalInitatives?.Count ?? 0);
+
+    function addInitative() {
+        const i = initativeCount;
+        const container = document.getElementById('initatives-container');
+        const empty = document.getElementById('initatives-empty');
+
+        const html = `
+            <div class="initative-item" data-index="${i}">
+                <div class="initative-item-header">
+                    <span class="initative-index">Iniciativa #${i + 1}</span>
+                    <button type="button" class="btn-remove-initative" onclick="removeInitative(this)" title="Eliminar">
+                        <i class="bi bi-trash3"></i>
+                    </button>
+                </div>
+                <div class="form-grid">
+                    <div class="field-group">
+                        <label class="field-label">Nombre</label>
+                        <input name="GoalInitatives[${i}].Name"
+                               class="form-control-custom"
+                               placeholder="Nombre de la iniciativa" />
+                        <span class="field-error"></span>
+                    </div>
+                    <div class="field-group">
+                        <label class="field-label">Descripción</label>
+                        <textarea name="GoalInitatives[${i}].Descripcion"
+                                  class="form-contro-textareal-custom"
+                                  placeholder="Descripción de la iniciativa"></textarea>
+                        <span class="field-error"></span>
+                    </div>
+                </div>
+                <div class="form-grid mt-2" style="gap:10px;">
+                    <label class="toggle-group">
+                        <div>
+                            <div class="toggle-label">Es Ejecutable</div>
+                            <div class="toggle-desc">Indicar si es Ejecutable</div>
+                        </div>
+                        <label class="switch">
+                            <input name="GoalInitatives[${i}].IsExecutable"
+                                   type="checkbox"
+                                   value="true" />
+                            <span class="switch-slider"></span>
+                        </label>
+                    </label>
+                </div>
+            </div>`;
+
+        container.insertAdjacentHTML('beforeend', html);
+        empty.style.display = 'none';
+        initativeCount++;
+    }
+
+    function removeInitative(btn) {
+        const item = btn.closest('.initative-item');
+        item.style.animation = 'none';
+        item.style.opacity = '0';
+        item.style.transform = 'translateY(-6px)';
+        item.style.transition = 'opacity 0.15s, transform 0.15s';
+
+        setTimeout(() => {
+            item.remove();
+            reindexInitatives();
+            if (document.querySelectorAll('.initative-item').length === 0) {
+                document.getElementById('initatives-empty').style.display = '';
+            }
+        }, 150);
+    }
+
+    function reindexInitatives() {
+        document.querySelectorAll('.initative-item').forEach((item, i) => {
+            item.dataset.index = i;
+            item.querySelector('.initative-index').textContent = `Iniciativa #${i + 1}`;
+            item.querySelectorAll('[name]').forEach(el => {
+                el.name = el.name.replace(/\[\d+\]/, `[${i}]`);
+            });
+        });
+        initativeCount = document.querySelectorAll('.initative-item').length;
+    }
+    </script>
+}

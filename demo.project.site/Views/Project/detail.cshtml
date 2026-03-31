@@ -27,10 +27,18 @@
                         <p class="form-card-subtitle">Complete los campos para @(Model.ProjectId == 0 ? "registrar" : "actualizar") el proyecto</p>
                     </div>
                 </div>
-                <button type="reset" form="project-form" class="btn-ghost-custom">
-                    <i class="bi bi-arrow-counterclockwise" style="font-size:14px;"></i>
-                    Limpiar
-                </button>
+                <div class="d-flex gap-3">
+                    <div class="justify-content-around">
+                        <button type="reset" form="project-form" class="btn-ghost-custom">
+                            <i class="bi bi-arrow-counterclockwise" style="font-size:14px;"></i>
+                            Limpiar
+                        </button>
+                        <a asp-action="Assign" asp-controller="Goal" asp-route-rowguid="@Model.RowGuid" class="btn-success-custom text-decoration-none">
+                            <i class="bi bi-list-check" style="font-size:14px;"></i>
+                            Asignar Objetivos
+                        </a>
+                    </div>
+                </div>
             </div>
 
             <!-- Body -->
