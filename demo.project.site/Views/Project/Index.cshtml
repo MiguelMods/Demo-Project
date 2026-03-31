@@ -1,5 +1,4 @@
 ﻿@model List<ProjectResponse>
-
 <!-- Page header -->
 <div class="page-header">
     <div class="page-header-left">
@@ -81,9 +80,9 @@
                         </td>
                         <td data-label="Creado por">
                             <div class="cell-user">
-                                @*                                 <div class="user-avatar">
-                                    @(item.CreatedBy)
-                                </div> *@
+                                <div class="user-avatar">
+                                    @(item.CreatedBy.Trim().Substring(0, 1).ToUpper())
+                                </div>
                                 <span class="cell-user-name">@item.CreatedBy</span>
                             </div>
                         </td>
@@ -108,11 +107,13 @@
 </div>
 
 <script>
-    function filterTable() {
+    function filterTable()
+    {
         const q = document.getElementById('tableSearch').value.toLowerCase();
         const rows = document.querySelectorAll('#tableBody tr');
         let visible = 0;
-        rows.forEach(row => {
+        rows.forEach(row =>
+        {
             const text = row.textContent.toLowerCase();
             const show = text.includes(q);
             row.style.display = show ? '' : 'none';

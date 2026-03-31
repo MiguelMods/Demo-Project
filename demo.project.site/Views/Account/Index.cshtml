@@ -24,7 +24,7 @@
             <p class="login-card-desc">Ingresa tus credenciales para continuar</p>
         </div>
 
-        <form id="form-login" asp-action="login" method="post">
+        <form id="form-login" asp-action="login" method="post" asp-route-ReturnUrl="@ViewData["ReturnUrl"]">
             @Html.AntiForgeryToken()
 
             <!-- Usuario -->
@@ -75,9 +75,7 @@
                 <i class="bi bi-box-arrow-in-right" style="font-size:15px;"></i>
                 Iniciar sesión
             </button>
-
-            @Html.ValidationSummary(false, "", new { @class = "validation-summary-errors" })
-
+            <div asp-validation-summary="All" class="text-danger"></div>
         </form>
     </div>
 
