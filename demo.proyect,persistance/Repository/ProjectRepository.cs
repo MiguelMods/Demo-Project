@@ -86,6 +86,7 @@ public class ProjectRepository(DemoProjectApplicationContext demoProjectApplicat
             entityOnDb.RowGuid = projectUpdate.RowGuid;
             entityOnDb.UpdatedBy = projectUpdate.UpdateBy;
             entityOnDb.UpdatedAt = DateTime.Now;
+            entityOnDb.IsActive = projectUpdate.IsActive;
 
             var saveResult = await demoProjectApplicationContext.SaveChangesAsync();
 
