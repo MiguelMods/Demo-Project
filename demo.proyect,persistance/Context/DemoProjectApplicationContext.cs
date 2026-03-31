@@ -16,7 +16,7 @@ public class DemoProjectApplicationContext(DbContextOptions<DemoProjectApplicati
     public DbSet<PerspectiveEntity> PerspectiveEntities { get; set; }
     public DbSet<InitiativeEntity> InitiativeEntities { get; set; }
     public DbSet<PeriodEntity> PeriodEntities { get; set; }
-    public DbSet<GoalTypeEntity> GoalTypes { get; set; } 
+    public DbSet<GoalTypeEntity> GoalTypesEntities { get; set; } 
     public DbSet<ProfileEntity> ProfileEntities { get; set; } 
     public DbSet<UserEntity> UserEntities { get; set; } 
     public DbSet<UsersProfilesEntity> UsersProfilesEntities { get; set; } 
