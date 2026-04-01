@@ -7,11 +7,138 @@
     <script type="importmap"></script>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/notify.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/demo.project.site.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
 </head>
 <body>
+    <!-- Loading banner -->
+    <div id="page-loading-banner" style="
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    z-index: 9998;
+    background: #27272a;
+    overflow: hidden;
+">
+        <div id="page-loading-bar" style="
+        height: 100%;
+        width: 0%;
+        background: #6366f1;
+        border-radius: 0 2px 2px 0;
+        transition: width 0.1s ease;
+        box-shadow: 0 0 8px rgba(99,102,241,0.6);
+    "></div>
+    </div>
 
+    <div id="page-loading-toast" style="
+    display: none;
+    position: fixed;
+    bottom: 24px; right: 24px;
+    z-index: 9997;
+    background: #16181f;
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 12px;
+    padding: 12px 16px;
+    display: none;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    color: #a1a1aa;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+    pointer-events: none;
+">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+             style="flex-shrink:0; animation: spin 0.8s linear infinite;">
+            <circle cx="12" cy="12" r="10" stroke="#3f3f46" stroke-width="2.5" />
+            <path d="M12 2a10 10 0 0 1 10 10" stroke="#818cf8" stroke-width="2.5"
+                  stroke-linecap="round" />
+        </svg>
+        <span>Cargando contenido...</span>
+    </div>
+
+    <style>
+        @@keyframes spin { to { transform: rotate(360deg); } }
+    </style>
+
+    <script>
+        const loadingBar = document.getElementById('page-loading-bar');
+        const loadingBanner = document.getElementById('page-loading-banner');
+        const loadingToast = document.getElementById('page-loading-toast');
+
+        let barInterval = null;
+        let toastTimeout = null;
+
+        function startLoading()
+        {
+            // Barra superior
+            loadingBanner.style.display = 'block';
+            loadingBar.style.width = '0%';
+
+            let progress = 0;
+            clearInterval(barInterval);
+            barInterval = setInterval(() =>
+            {
+                // avanza rápido al inicio, se frena al llegar a 85%
+                const step = progress < 40 ? 8 : progress < 70 ? 4 : progress < 85 ? 1 : 0;
+                progress = Math.min(progress + step, 85);
+                loadingBar.style.width = progress + '%';
+            }, 80);
+
+            // Toast aparece solo si tarda más de 300ms (evita flash en páginas rápidas)
+            toastTimeout = setTimeout(() =>
+            {
+                loadingToast.style.display = 'flex';
+            }, 300);
+        }
+
+        function stopLoading()
+        {
+            clearInterval(barInterval);
+            clearTimeout(toastTimeout);
+
+            // completa la barra antes de ocultarla
+            loadingBar.style.transition = 'width 0.2s ease';
+            loadingBar.style.width = '100%';
+
+            setTimeout(() =>
+            {
+                loadingBanner.style.display = 'none';
+                loadingBar.style.width = '0%';
+                loadingBar.style.transition = 'width 0.1s ease';
+                loadingToast.style.display = 'none';
+
+            }, 250);
+            setTimeout(() =>
+            {
+                notify.banner.success("Pagina Cargada");
+            }, 250);
+        }
+
+        // Disparar en cualquier clic sobre <a> que navegue a otra URL
+        document.addEventListener('click', e =>
+        {
+            const anchor = e.target.closest('a');
+            if (!anchor) return;
+
+            const href = anchor.getAttribute('href');
+            if (!href) return;
+
+            // ignorar: anclas, javascript:, target="_blank", mismo hash
+            if (
+                href.startsWith('#') ||
+                href.startsWith('javascript') ||
+                anchor.target === '_blank' ||
+                anchor.hasAttribute('data-no-loading')
+            ) return;
+
+            startLoading();
+        });
+
+        // Detener cuando la página ya cargó (por si se llega directo)
+        window.addEventListener('pageshow', stopLoading);
+    </script>
     <!-- ── TOPBAR ──────────────────────────────── -->
     <header class="topbar">
         <button class="topbar-toggle" id="sidebarToggle" title="Toggle sidebar">
@@ -137,26 +264,32 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/notify.js" asp-append-version="true"></script>
     <script>
         const sidebar = document.getElementById('sidebar');
         const toggleBtn = document.getElementById('sidebarToggle');
         const COLLAPSED_KEY = 'sidebar_collapsed';
 
         // Restore state
-        if (localStorage.getItem(COLLAPSED_KEY) === '1') {
+        if (localStorage.getItem(COLLAPSED_KEY) === '1')
+        {
             sidebar.classList.add('collapsed');
         }
-        toggleBtn.addEventListener('click', () => {
+        toggleBtn.addEventListener('click', () =>
+        {
             const isMobile = window.innerWidth <= 768;
-            if (isMobile) {
+            if (isMobile)
+            {
                 sidebar.classList.toggle('mobile-open');
-            } else {
+            } else
+            {
                 sidebar.classList.toggle('collapsed');
                 localStorage.setItem(COLLAPSED_KEY, sidebar.classList.contains('collapsed') ? '1' : '0');
             }
         });
 
-        function toggleSubmenu(id, trigger) {
+        function toggleSubmenu(id, trigger)
+        {
             if (sidebar.classList.contains('collapsed')) return;
             const menu = document.getElementById(id);
             const isOpen = menu.classList.contains('open');
@@ -164,6 +297,7 @@
             trigger.classList.toggle('open', !isOpen);
         }
     </script>
+    <partial name="_Notifications" />
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

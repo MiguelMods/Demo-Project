@@ -1,3 +1,4 @@
+using demo.project.site.Extensions;
 using demo.project.site.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -10,6 +11,14 @@ namespace demo.project.site.Controllers
     {
         public IActionResult Index()
         {
+            // Toasts
+            TempData.ToastSuccess("Bienvenido al sistema", "Bienvenido");
+            //TempData.ToastError("Ocurrió un error al guardar.", "Error inesperado");
+            //TempData.ToastWarning("El proyecto ya existe en el sistema.");
+
+            // Banners (más prominentes, para avisos de página)
+            TempData.BannerInfo($"Hola, {HttpContext.User.Identity.Name}");
+            //TempData.BannerError("No tienes permisos para modificar este registro.");
             return View();
         }
 
