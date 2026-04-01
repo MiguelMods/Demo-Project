@@ -11,9 +11,32 @@ namespace demo.project.site.Controllers
     {
         private readonly IUnitOfWork unitOfWork = unitOfWork;
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var response = await unitOfWork.GoalRepository.GetAllIncludeAsync();
+            return View(response.Data);
+        }
+
+        public async Task<IActionResult> Detail(string rowguid = "") 
+        {
+            if (string.IsNullOrEmpty(rowguid))
+            {
+                TempData["Error"] = "No se puede abrir el Objetivo seleccionado";
+                return RedirectToAction(nameof(Index));
+            }
+
+            var response = await unitOfWork.GoalRepository.GetByRowGuid(rowguid);
+
+            if (!response.IsSuccess)
+            {
+                TempData["Error"] = response.Message;
+                return RedirectToAction(nameof(Index));
+            }
+
+            await Load();
+            var viewModel = (ProjectGoalViewModel)response.Data;
+
+            return View(viewModel);
         }
 
         [HttpGet("")]
@@ -32,7 +55,6 @@ namespace demo.project.site.Controllers
                 }
             });
         }
-
 
         [HttpPost("")]
         public async Task<IActionResult> Post(ProjectGoalViewModel projectGoalViewModel) 
