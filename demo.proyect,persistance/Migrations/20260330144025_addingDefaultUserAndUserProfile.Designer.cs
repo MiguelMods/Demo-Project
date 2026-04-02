@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using demo.proyect_persistance.Context;
 
@@ -11,9 +12,11 @@ using demo.proyect_persistance.Context;
 namespace demo.proyect_persistance.Migrations
 {
     [DbContext(typeof(DemoProjectApplicationContext))]
-    partial class DemoProjectApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20260330144025_addingDefaultUserAndUserProfile")]
+    partial class addingDefaultUserAndUserProfile
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -184,33 +187,6 @@ namespace demo.proyect_persistance.Migrations
                     b.HasIndex("SuperiorAreaId");
 
                     b.ToTable("areas", "dbo");
-
-                    b.HasData(
-                        new
-                        {
-                            AreaId = 1L,
-                            Code = "01",
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatedBy = "Me",
-                            Description = "Prueba",
-                            IsActive = false,
-                            IsDeleted = false,
-                            Name = "Prueba",
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            AreaId = 2L,
-                            Code = "02",
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            CreatedBy = "Me",
-                            Description = "Prueba 02",
-                            IsActive = false,
-                            IsDeleted = false,
-                            Name = "Prueba 02",
-                            SuperiorAreaId = 1L,
-                            UpdatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
-                        });
                 });
 
             modelBuilder.Entity("demo.proyect.domain.Entities.GoalEntity", b =>

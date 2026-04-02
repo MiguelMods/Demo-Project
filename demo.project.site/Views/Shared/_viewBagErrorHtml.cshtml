@@ -1,0 +1,8 @@
+﻿@if (!string.IsNullOrEmpty((string)TempData["Error"])) 
+{
+    <div class="alert alert-danger text-center mt-3">
+        <div>
+            @((string)TempData["Error"])
+        </div>
+    </div>
+}

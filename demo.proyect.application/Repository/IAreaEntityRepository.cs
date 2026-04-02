@@ -7,6 +7,7 @@ namespace demo.proyect.application.Repository;
 public interface IAreaEntityRepository 
 {
     Task<Result<List<AreaResponse>>> GetAllAsync();
+    Task<Result<List<AreaResponse>>> GetAllSubAreasFromAreaId(long areaId);
     Task<Result<AreaResponse?>> GetByIdAsync(long id);
     Task<Result<AreaResponse?>> GetByRowGuidAsync(string rowGuid);
     Task<Result<AreaResponse>> AddAsync(AreaCreate areaEntity);

@@ -1,0 +1,37 @@
+﻿@* ═══════════════════════════════════════════
+       _Notifications.cshtml  —  Partial View
+       Colocar en: Views/Shared/_Notifications.cshtml
+       Incluir en _Layout.cshtml antes de </body>
+    ═══════════════════════════════════════════ *@
+
+@if (TempData["Toast.Type"] != null)
+{
+    var type = TempData["Toast.Type"]?.ToString() ?? "info";
+    var title = TempData["Toast.Title"]?.ToString() ?? "";
+    var message = TempData["Toast.Message"]?.ToString() ?? "";
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            notify.toast({
+                type:    '@Html.Raw(type)',
+                title:   '@Html.Raw(title)',
+                message: '@Html.Raw(message)'
+            });
+        });
+    </script>
+}
+
+@if (TempData["Banner.Type"] != null)
+{
+    var type = TempData["Banner.Type"]?.ToString() ?? "info";
+    var message = TempData["Banner.Message"]?.ToString() ?? "";
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            notify.banner({
+                type:    '@Html.Raw(type)',
+                message: '@Html.Raw(message)'
+            });
+        });
+    </script>
+}

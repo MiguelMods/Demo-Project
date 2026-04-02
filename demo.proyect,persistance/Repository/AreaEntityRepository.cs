@@ -130,4 +130,10 @@ public class AreaEntityRepository(DemoProjectApplicationContext demoProjectAppli
             SuperiorAreaId = areaEntity.SuperiorAreaId,
             CreatedBy = areaEntity.CreateBy
         };
+
+    public async Task<Result<List<AreaResponse>>> GetAllSubAreasFromAreaId(long areaId)
+    {
+       var result = await entity.Where(x => x.SuperiorAreaId == areaId).Select(x => (AreaResponse)x).ToListAsync();
+        return result.Success();
+    }
 }

@@ -2,14 +2,39 @@
 using demo.proyect.application.Create;
 using demo.proyect.application.DTO_s;
 using demo.proyect.application.Repository;
+using demo.proyect.common.Helpers.Results;
 using demo.proyect.domain.Entities;
 using demo.proyect_persistance.Context;
+using Microsoft.EntityFrameworkCore;
 
 namespace demo.proyect_persistance.Repository;
 
 public class InitiativeRepository(DemoProjectApplicationContext demoProjectApplicationContext) : IInitiativeRepository
 {
     private readonly DemoProjectApplicationContext demoProjectApplicationContext = demoProjectApplicationContext;
+
+    public async Task<Result<List<InitiativeResponse>>> GetAllAsyn()
+        => await demoProjectApplicationContext.InitiativeEntities
+            .Select(x => (InitiativeResponse)x)
+            .ToListAsync()
+            .ContinueWith(t => Result<List<InitiativeResponse>>.Success(t.Result))
+            .ContinueWith(t => t.IsFaulted ? Result<List<InitiativeResponse>>.Failure(t.Exception?.Message ?? "") : t.Result);
+
+    public async Task<Result<List<InitiativeResponse>>> GetAllIncludeAsyn()
+        => await demoProjectApplicationContext.InitiativeEntities
+            .Include(x => x.Area)
+            .Include(x => x.Goal)
+            .Select(x => (InitiativeResponse)x)
+            .ToListAsync()
+            .ContinueWith(t => Result<List<InitiativeResponse>>.Success(t.Result))
+            .ContinueWith(t => t.IsFaulted ? Result<List<InitiativeResponse>>.Failure(t.Exception?.Message ?? "") : t.Result);
+
+    public async Task<Result<InitiativeResponse>> GetByRowGuidAsync()
+        => await demoProjectApplicationContext.InitiativeEntities
+            .Select(x => (InitiativeResponse)x)
+            .FirstOrDefaultAsync()
+            .ContinueWith(t => t.Result != null ? Result<InitiativeResponse>.Success(t.Result) : Result<InitiativeResponse>.Failure(Messages.EntityNotFound))
+            .ContinueWith(t => t.IsFaulted ? Result<InitiativeResponse>.Failure(t.Exception?.Message ?? "") : t.Result);
 
     public async Task<Result<InitiativeResponse>> AddAsync(InitativeCreate initativeCreate)
     {

@@ -27,10 +27,18 @@
                         <p class="form-card-subtitle">Complete los campos para @(Model.ProjectId == 0 ? "registrar" : "actualizar") el proyecto</p>
                     </div>
                 </div>
-                <button type="reset" form="project-form" class="btn-ghost-custom">
-                    <i class="bi bi-arrow-counterclockwise" style="font-size:14px;"></i>
-                    Limpiar
-                </button>
+                <div class="d-flex gap-3">
+                    <div class="justify-content-around">
+                        <button type="reset" form="project-form" class="btn-ghost-custom">
+                            <i class="bi bi-arrow-counterclockwise" style="font-size:14px;"></i>
+                            Limpiar
+                        </button>
+                        <a asp-action="Assign" asp-controller="Goal" asp-route-rowguid="@Model.RowGuid" class="btn-success-custom text-decoration-none">
+                            <i class="bi bi-list-check" style="font-size:14px;"></i>
+                            Asignar Objetivos
+                        </a>
+                    </div>
+                </div>
             </div>
 
             <!-- Body -->
@@ -39,9 +47,7 @@
                     @Html.AntiForgeryToken()
                     <input asp-for="ProjectId" type="hidden" />
                     <input asp-for="RowGuid" type="hidden" />
-
-                    @Html.ValidationSummary(false, "", new { @class = "validation-summary-errors" })
-
+                    <div asp-validation-summary="All"></div>
                     <!-- IDENTIFICACIÓN -->
                     <div class="form-section">
                         <div class="form-section-title">Identificación</div>
@@ -191,6 +197,16 @@
                                 </label>
                             </label>
 
+                            <label class="toggle-group" for="IsActive">
+                                <div>
+                                    <div class="toggle-label">@Html.DisplayNameFor(m => m.IsActive)</div>
+                                    <div class="toggle-desc">El Proyecto esta activo</div>
+                                </div>
+                                <label class="switch">
+                                    <input asp-for="IsActive" type="checkbox" />
+                                    <span class="switch-slider"></span>
+                                </label>
+                            </label>
                         </div>
                     </div>
 

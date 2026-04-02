@@ -14,14 +14,12 @@ namespace demo.project.site.Controllers
 
         public IActionResult Index(string returnUrl = "")
         {
-            if (!string.IsNullOrEmpty(returnUrl))
-                ViewBag.UrlComeFrom = returnUrl;
-
+            ViewData["ReturnUrl"] = returnUrl;
             return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> Login(LoginViewModel model) 
+        public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = "")
         {
             if(!ModelState.IsValid)
                 return View("index", model);
@@ -30,11 +28,21 @@ namespace demo.project.site.Controllers
 
             if (!result.IsSuccess) 
             {
-                ModelState.AddModelError(nameof(model.UserName), result.Message);
+                ModelState.AddModelError("", result.Message);
                 return View("index", model);
             }
 
-            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, result.Data);
+            var properties = new AuthenticationProperties
+            {
+                IsPersistent = model.RememberMe,
+                ExpiresUtc = DateTime.UtcNow.AddDays(7),
+                AllowRefresh = true
+            };
+
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, result.Data, properties);
+
+            if (!string.IsNullOrEmpty(returnUrl))
+               return Redirect(returnUrl);
 
             return Redirect("/home/index");
         }

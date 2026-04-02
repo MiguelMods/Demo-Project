@@ -1,18 +1,18 @@
-﻿@model List<ProjectResponse>
+﻿@model List<InitiativeResponse>
 <!-- Page header -->
 <div class="page-header">
     <div class="page-header-left">
-        <h1 class="page-title">Proyectos</h1>
-        <p class="page-subtitle">Gestión y seguimiento de proyectos registrados</p>
+        <h1 class="page-title">Iniciativas</h1>
+        <p class="page-subtitle">Gestión y Seguimiento de Iniciativas</p>
     </div>
     <div class="page-header-actions">
         <a href="#" class="btn-ghost-custom">
             <i class="bi bi-printer" style="font-size:14px;"></i>
             Imprimir
         </a>
-        <a href="/project/register" class="btn-primary-custom">
+        <a asp-action="register" class="btn-primary-custom">
             <i class="bi bi-plus" style="font-size:16px;"></i>
-            Nuevo proyecto
+            Nueva Iniciativa
         </a>
     </div>
 </div>
@@ -24,10 +24,10 @@
         <input type="text"
                class="search-input"
                id="tableSearch"
-               placeholder="Buscar proyecto..."
+               placeholder="Buscar Iniciativa..."
                oninput="filterTable()" />
     </div>
-    <span class="table-count" id="tableCount">@Model.Count proyecto@(Model.Count != 1 ? "s" : "")</span>
+    <span class="table-count" id="tableCount">@Model?.Count Iniciativa@(Model?.Count != 1 ? "s" : "")</span>
 </div>
 
 <!-- Table -->
@@ -36,25 +36,23 @@
         <thead>
             <tr>
                 <th>#</th>
-                <th>Código</th>
                 <th>Nombre</th>
-                <th>Descripción</th>
-                <th>Fecha entrega</th>
-                <th>Creado por</th>
-                <th>Área</th>
+                <th>Descripcion</th>
+                <th>Fecha Creacion</th>
+                <th>Creado Por</th>
                 <th>Estado</th>
-                <th></th>
+                <th>Detalle</th>
             </tr>
         </thead>
         <tbody id="tableBody">
-            @if (!Model.Any())
+            @if (Model?.Count <= 0)
             {
                 <tr>
                     <td colspan="9">
                         <div class="table-empty">
                             <div class="table-empty-icon"><i class="bi bi-kanban"></i></div>
-                            <div class="table-empty-title">Sin proyectos registrados</div>
-                            <div class="table-empty-desc">Crea el primer proyecto usando el botón "Nuevo proyecto"</div>
+                            <div class="table-empty-title">Sin Objetivos registrados</div>
+                            <div class="table-empty-desc">Crea el primer objetivo usando el botón "Nuevo Objetivo"</div>
                         </div>
                     </td>
                 </tr>
@@ -64,19 +62,15 @@
                 @foreach (var item in Model)
                 {
                     <tr>
-                        <td class="cell-id" data-label="#">@item.ProjectId</td>
-                        <td data-label="Código">
-                            <span class="cell-code">@item.CodeOne</span>
-                        </td>
+                        <td class="cell-id" data-label="#">@item.InitiativeId</td>
                         <td data-label="Nombre">
                             <span class="cell-name" title="@item.Name">@item.Name</span>
                         </td>
-                        <td data-label="Descripción">
-                            <span class="cell-desc" title="@item.Description">@item.Description</span>
+                        <td data-label="Nombre">
+                            <span class="cell-name" title="@item.Name">@item.Description</span>
                         </td>
-                        <td data-label="Fecha entrega" class="cell-date">
-                            <i class="bi bi-calendar3" style="font-size:12px; color:#c4c4c7; margin-right:5px;"></i>
-                            @item.WishDate?.ToString("dd MMM yyyy")
+                        <td data-label="Fecha Creacion">
+                            <span class="cell-desc" title="@item.CreatedAt">@item.CreatedAt</span>
                         </td>
                         <td data-label="Creado por">
                             <div class="cell-user">
@@ -86,14 +80,13 @@
                                 <span class="cell-user-name">@item.CreatedBy</span>
                             </div>
                         </td>
-                        <td data-label="Área" style="color:#52525b; font-size:13px;">@item.Area</td>
                         <td data-label="Estado">
                             <span class="badge-active @(item.IsActive ? "yes" : "no")">
                                 <span class="badge-dot"></span>
                                 @(item.IsActive ? "Activo" : "Inactivo")
                             </span>
                         </td>
-                        <td data-label="Acciones" style="text-align:right;">
+                        <td data-label="Detalle">
                             <a asp-action="detail" asp-route-rowguid="@item.RowGuid" class="btn-detail">
                                 <i class="bi bi-eye" style="font-size:12px;"></i>
                                 Detalle
@@ -105,7 +98,7 @@
         </tbody>
     </table>
 </div>
-
+<partial name="_viewBagErrorHtml" />
 <script>
     function filterTable()
     {
@@ -120,6 +113,6 @@
             if (show) visible++;
         });
         document.getElementById('tableCount').textContent =
-            visible + ' proyecto' + (visible !== 1 ? 's' : '');
+            visible + ' Objetivo' + (visible !== 1 ? 's' : '');
     }
 </script>

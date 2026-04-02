@@ -11,11 +11,16 @@ public class GoalResponse : BaseResponse
     public string? Formula { get; set; }
     public bool IsReal { get; set; }
     public long AreaId { get; set; }
+    public string Area { get; set; }
     public long PeriodId { get; set; }
+    public string Period { get; set; }
     public long PerspectiveId { get; set; }
+    public string Perspective { get; set; }
     public long GoalTypeId { get; set; }
+    public string GoalType { get; set; }
     public long ProjectId { get; set; }
-
+    public ProjectResponse Project { get; set; }
+    public IEnumerable<InitiativeResponse> InitiativeEntities { get; set; }
     public static explicit operator GoalResponse(GoalEntity goalEntity) => new() {
         GoalId = goalEntity.GoalId,
         Code = goalEntity.Code,
@@ -33,6 +38,16 @@ public class GoalResponse : BaseResponse
         CreatedAt = goalEntity.CreatedAt,
         UpdatedBy = goalEntity.UpdatedBy,
         UpdatedAt = goalEntity.UpdatedAt,
-        RowGuid = goalEntity.RowGuid
+        RowGuid = goalEntity.RowGuid,
+        Area = goalEntity?.Area?.Name,
+        Period = goalEntity?.Period?.Name,
+        Perspective = goalEntity?.Perspective?.Name,
+        GoalType = goalEntity?.GoalType?.Name,
+        Project = new() { 
+            ProjectId = goalEntity.ProjectId,
+            Name = goalEntity?.Project?.Name,
+            RowGuid = goalEntity?.Project?.RowGuid
+        },
+        InitiativeEntities = goalEntity?.InitiativeEntities?.Select(x => (InitiativeResponse)x).ToList()
     };
 }

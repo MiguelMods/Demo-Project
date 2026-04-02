@@ -14,4 +14,7 @@ public class UnitOfWork(DemoProjectApplicationContext demoProjectApplicationCont
     public IGoalRepository GoalRepository => new GoalRepository(demoProjectApplicationContext);
     public IInitiativeRepository InitiativeRepository => new InitiativeRepository(demoProjectApplicationContext);
     public IUserRepository UserRepository => new UserRepository(demoProjectApplicationContext);
+    public IPeriodRepository PeriodRepository => new PeriodRepository(demoProjectApplicationContext);
+    public IPerspectiveRepository PerspectiveRepository => new PerspectiveRepository(demoProjectApplicationContext);
+    public IGoalTypeRepository GoalTypeRepository => new GoalTypeRepository(demoProjectApplicationContext);
 }

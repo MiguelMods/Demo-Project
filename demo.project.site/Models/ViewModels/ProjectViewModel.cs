@@ -70,8 +70,10 @@ public class ProjectViewModel
     [Display(Name = "Tipo de Desarrollo")]
     [Required(ErrorMessage = Messages.IsRequired)]
     public long ProjectDevelopmentTypeId { get; set; }
-
     public string? RowGuid { get; set; }
+
+    [Display(Name = "Esta Activo")]
+    public bool IsActive { get; set; }
 
     public static explicit operator ProjectViewModel(ProjectResponse response)
         => new() { 
@@ -92,6 +94,7 @@ public class ProjectViewModel
             AreaId = response.AreaId,
             SubAreaId = response.SubAreaId,
             RowGuid = response.RowGuid,
+            IsActive = response.IsActive
         };
     public static ProjectCreate Map(ProjectViewModel model, string createdBy = "") => new() 
     {
@@ -110,7 +113,8 @@ public class ProjectViewModel
         PriorityTypeId = model.PriorityTypeId,
         ProjectTypeId = model.ProjectTypeId,
         ProjectDevelopmentTypeId = model.ProjectDevelopmentTypeId,
-        CreateBy = createdBy
+        CreateBy = createdBy, 
+        IsActive = model.IsActive
     };
     public static ProjectUpdate Map(ProjectViewModel model, string updateBy = "", string rowGuid = "") => new()
     {
@@ -131,6 +135,7 @@ public class ProjectViewModel
         ProjectTypeId = model.ProjectTypeId,
         ProjectDevelopmentTypeId = model.ProjectDevelopmentTypeId,
         UpdateBy = updateBy,
-        RowGuid = rowGuid
+        RowGuid = rowGuid,
+        IsActive = model.IsActive
     };
 }

@@ -10,4 +10,7 @@ public interface IUnitOfWork
     IGoalRepository GoalRepository { get; }
     IInitiativeRepository InitiativeRepository { get; }
     IUserRepository UserRepository { get; }
+    IPeriodRepository PeriodRepository { get; }
+    IPerspectiveRepository PerspectiveRepository { get; }
+    IGoalTypeRepository GoalTypeRepository { get; }
 }

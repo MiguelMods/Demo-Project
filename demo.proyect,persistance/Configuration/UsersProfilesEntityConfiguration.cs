@@ -20,5 +20,8 @@ public class UsersProfilesEntityConfiguration : IEntityTypeConfiguration<UsersPr
         builder.Property(e => e.IsDeleted).HasDefaultValue(false);
         builder.Property(e => e.RowGuid).ValueGeneratedOnAdd().HasDefaultValueSql("NEWID()");
         builder.HasIndex(e => e.RowGuid).IsUnique();
+        builder.HasData([
+                new() { UserId = 1, ProfileId = 1, CreatedBy = "system" },
+            ]);
     }
 }

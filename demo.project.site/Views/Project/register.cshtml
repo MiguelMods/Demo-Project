@@ -39,9 +39,7 @@
                     @Html.AntiForgeryToken()
                     <input asp-for="ProjectId" type="hidden" />
                     <input asp-for="RowGuid" type="hidden" />
-
-                    @Html.ValidationSummary(false, "", new { @class = "validation-summary-errors" })
-
+                    <div asp-validation-summary="All"></div>
                     <!-- IDENTIFICACIÓN -->
                     <div class="form-section">
                         <div class="form-section-title">Identificación</div>
@@ -92,24 +90,12 @@
                         <div class="form-grid form-grid-2">
                             <div class="field-group">
                                 <label asp-for="Area" class="field-label"></label>
-                                <select asp-for="AreaId" class="form-select-custom">
-                                    <option value="0">Seleccione un área</option>
-                                    @foreach (var option in ((List<SelectOption>)ViewBag.Area))
-                                    {
-                                        <option value="@option.Value">@option.Text.ToUpper()</option>
-                                    }
-                                </select>
+                                <select asp-for="AreaId" data-async-select data-url="/fill/options/areas" data-placeholder="Seleccione un área" class="form-select-custom"></select>
                                 <span asp-validation-for="AreaId" class="field-error"></span>
                             </div>
                             <div class="field-group">
                                 <label asp-for="SubArea" class="field-label"></label>
-                                <select asp-for="SubAreaId" class="form-select-custom">
-                                    <option value="0">Seleccione una subárea</option>
-                                    @foreach (var option in ((List<SelectOption>)ViewBag.SubArea))
-                                    {
-                                        <option value="@option.Value">@option.Text.ToUpper()</option>
-                                    }
-                                </select>
+                                <select asp-for="SubAreaId" data-async-select data-url="/fill/options/subareas" data-placeholder="Seleccione un área" class="form-select-custom"></select>
                                 <span asp-validation-for="SubAreaId" class="field-error"></span>
                             </div>
                             <div class="field-group">
@@ -191,6 +177,16 @@
                                 </label>
                             </label>
 
+                            <label class="toggle-group" for="IsActive">
+                                <div>
+                                    <div class="toggle-label">@Html.DisplayNameFor(m => m.IsActive)</div>
+                                    <div class="toggle-desc">El Proyecto esta activo</div>
+                                </div>
+                                <label class="switch">
+                                    <input asp-for="IsActive" type="checkbox" />
+                                    <span class="switch-slider"></span>
+                                </label>
+                            </label>
                         </div>
                     </div>
 
@@ -215,4 +211,17 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script>
+        document.getElementById('@Html.IdFor(x => x.AreaId)').addEventListener('change', function ()
+        {
+            let selectValue = this.value;
+            if (selectValue !== 0 || selectValue !== null || selectValue !== "" || selectValue !== undefined)
+            {
+                AsyncSelect.reload(document.getElementById('@Html.IdFor(x => x.SubAreaId)'), { areaid: this.value });
+            } else
+            {
+                const element = document.getElementById('@Html.IdFor(x => x.SubAreaId)')
+            }
+        });
+    </script>
 }

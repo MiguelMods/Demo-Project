@@ -2,7 +2,7 @@
 
 namespace demo.proyect.application.DTO_s;
 
-public class ProjectResponse : BaseResponse
+public class ProjectResponse() : BaseResponse
 {
     public long ProjectId { get; set; }
     public string CodeOne { get; set; }

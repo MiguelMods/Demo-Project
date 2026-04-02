@@ -35,7 +35,7 @@ public class UserRepository(DemoProjectApplicationContext demoProjectApplication
         if (userOnDb is null)
             return Result<bool>.Failure(Messages.EntityNotFound);
 
-        userOnDb?.IsBloked = true;
+        userOnDb.IsBloked = true;
         var updateResult = await demoProjectApplicationContext.SaveChangesAsync() > 0;
 
         if (!updateResult)
@@ -62,7 +62,7 @@ public class UserRepository(DemoProjectApplicationContext demoProjectApplication
         if (userOnDb is null)
             return Result<bool>.Failure(Messages.EntityNotFound);
 
-        userOnDb?.IsBloked = true;
+        userOnDb.IsBloked = true;
         var updateResult = await demoProjectApplicationContext.SaveChangesAsync() > 0;
 
         if (!updateResult)
