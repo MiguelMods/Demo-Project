@@ -51,7 +51,7 @@ const AsyncSelect = (() =>
         trigger.setAttribute('role', 'combobox');
         trigger.setAttribute('aria-expanded', 'false');
         trigger.innerHTML = `
-            <span class="aselect-trigger-text placeholder">${placeholder}</span>
+            <span class="aselect-trigger-text">${placeholder}</span>
             <div class="aselect-trigger-icons">
                 <button type="button" class="aselect-clear" title="Limpiar">
                     <i class="bi bi-x"></i>

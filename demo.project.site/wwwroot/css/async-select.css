@@ -100,9 +100,9 @@
 /* Dropdown panel */
 .aselect-dropdown {
     position: relative;
-    top: calc(100% + 5px);
+/*    top: calc(100% + 5px);
     left: 0;
-    right: 0;
+    right: 0;*/
     background: #fff;
     border: 1px solid #e4e4e7;
     border-radius: 10px;
