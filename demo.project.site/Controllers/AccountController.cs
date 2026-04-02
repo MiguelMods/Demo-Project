@@ -32,7 +32,14 @@ namespace demo.project.site.Controllers
                 return View("index", model);
             }
 
-            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, result.Data);
+            var properties = new AuthenticationProperties
+            {
+                IsPersistent = model.RememberMe,
+                ExpiresUtc = DateTime.UtcNow.AddDays(7),
+                AllowRefresh = true
+            };
+
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, result.Data, properties);
 
             if (!string.IsNullOrEmpty(returnUrl))
                return Redirect(returnUrl);
