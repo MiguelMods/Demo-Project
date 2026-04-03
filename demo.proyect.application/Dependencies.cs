@@ -11,5 +11,7 @@ public static class Dependencies
         services.AddScoped<IProjectInitativeService, ProjectInitativeService>();
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<ISessionService, SessionService>();
+        services.AddScoped<IEmployeeService, EmployeeService>();
+        services.AddScoped<IPositionService, PositionService>();
     }
 }
