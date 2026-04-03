@@ -17,4 +17,25 @@ public class UnitOfWork(DemoProjectApplicationContext demoProjectApplicationCont
     public IPeriodRepository PeriodRepository => new PeriodRepository(demoProjectApplicationContext);
     public IPerspectiveRepository PerspectiveRepository => new PerspectiveRepository(demoProjectApplicationContext);
     public IGoalTypeRepository GoalTypeRepository => new GoalTypeRepository(demoProjectApplicationContext);
+    public IEmployeeRepository EmployeeRepository => new EmployeeRepository(demoProjectApplicationContext);
+    public IPositionEntityRepository PositionRepository => new PositionEntityRepository(demoProjectApplicationContext);
+    public async Task<int> SaveChangesAsync()
+    {
+        demoProjectApplicationContext.ChangeTracker.DetectChanges();
+        return await demoProjectApplicationContext.SaveChangesAsync();
+    }
+
+    public void Dispose()
+    {
+        Dispose(true);
+        GC.SuppressFinalize(this);
+    }
+
+    protected virtual void Dispose(bool disposing)
+    {
+        if (disposing)
+        {
+            demoProjectApplicationContext.Dispose();
+        }
+    }
 }
