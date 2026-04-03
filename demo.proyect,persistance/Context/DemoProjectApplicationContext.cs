@@ -20,6 +20,9 @@ public class DemoProjectApplicationContext(DbContextOptions<DemoProjectApplicati
     public DbSet<ProfileEntity> ProfileEntities { get; set; } 
     public DbSet<UserEntity> UserEntities { get; set; } 
     public DbSet<UsersProfilesEntity> UsersProfilesEntities { get; set; } 
+    public DbSet<EmployeeEntity> EmployeeEntities { get; set; } 
+    public DbSet<LevelEntity> LevelEntities { get; set; }
+    public DbSet<PositionEntity> PositionEntities { get; set; }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfiguration(new AreaEntityConfiguration());
@@ -36,5 +39,8 @@ public class DemoProjectApplicationContext(DbContextOptions<DemoProjectApplicati
         modelBuilder.ApplyConfiguration(new ProfileEntityConfiguration());
         modelBuilder.ApplyConfiguration(new UserEntityConfiguration());
         modelBuilder.ApplyConfiguration(new UsersProfilesEntityConfiguration());
+        modelBuilder.ApplyConfiguration(new PositionEntitiesConfiguration());
+        modelBuilder.ApplyConfiguration(new LevelEntityConfiguration());
+        modelBuilder.ApplyConfiguration(new EmployeeEntityConfiguration());
     }
 }
