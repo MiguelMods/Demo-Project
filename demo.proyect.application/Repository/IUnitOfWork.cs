@@ -1,6 +1,6 @@
 ﻿namespace demo.proyect.application.Repository;
 
-public interface IUnitOfWork
+public interface IUnitOfWork : IDisposable
 {
     IPriorityTypeEntityRepostory PriorityTypeEntityRepostory { get; }
     IAreaEntityRepository AreaEntityRepository { get; }
@@ -13,4 +13,7 @@ public interface IUnitOfWork
     IPeriodRepository PeriodRepository { get; }
     IPerspectiveRepository PerspectiveRepository { get; }
     IGoalTypeRepository GoalTypeRepository { get; }
+    IEmployeeRepository EmployeeRepository { get; }
+    IPositionEntityRepository PositionRepository { get; }
+    Task<int> SaveChangesAsync();
 }
