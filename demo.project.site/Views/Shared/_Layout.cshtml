@@ -206,13 +206,16 @@
                     </div>
                 </div>
 
+                <!-- RRHH (with submenu) -->
+                <div class="nav-section-label">Recursos Humanos</div>
+
                 <div class="nav-item-wrapper">
-                    <a class="nav-link-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "Area" ? "active" : "")"
-                       asp-controller="Area" asp-action="Index">
+                    <a class="nav-link-item @(ViewContext.RouteData.Values["controller"]?.ToString() == "Employee" ? "active" : "")"
+                       asp-controller="Employee" asp-action="Index">
                         <i class="bi bi-diagram-3 nav-icon"></i>
-                        <span class="nav-label">Áreas</span>
+                        <span class="nav-label">Empleados</span>
                     </a>
-                    <span class="nav-tooltip">Áreas</span>
+                    <span class="nav-tooltip">Empleados</span>
                 </div>
 
                 <!-- CONFIGURACIÓN -->
