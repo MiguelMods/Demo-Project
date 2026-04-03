@@ -1,6 +1,6 @@
 ﻿namespace demo.proyect.domain.Entities;
 
-public class LevelEntity
+public class LevelEntity : BaseEntity
 {
     public long LevelId { get; set; }
     public string Name { get; set; }

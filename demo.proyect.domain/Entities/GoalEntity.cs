@@ -18,5 +18,7 @@ public class GoalEntity : BaseEntity
     public long GoalTypeId { get; set; }
     public ProjectEntity Project { get; set; }
     public long ProjectId { get; set; }
+    public EmployeeEntity Employee { get; set; }
+    public long EmployeeId { get; set; }
     public ICollection<InitiativeEntity> InitiativeEntities { get; set; }
 }
