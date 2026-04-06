@@ -4,13 +4,16 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace demo.proyect_persistance.Configuration;
 
-public class IndicatorOldToNewEntityConfiguration : IEntityTypeConfiguration<IndicatorOldToNewEntity>
+public class MetricDataTypeEntityConfiguration : IEntityTypeConfiguration<MetricDataTypeEntity>
 {
-    public void Configure(EntityTypeBuilder<IndicatorOldToNewEntity> builder)
+    public void Configure(EntityTypeBuilder<MetricDataTypeEntity> builder)
     {
-        builder.ToTable("objetivo_empleado_completado", "dbo");
-        builder.HasKey(e => new { e.IndicatorOldId, e.IndicatorNewId });
-        builder.Property(e => e.Comment).IsRequired().HasMaxLength(250);
+        builder.ToTable("Tipo_data_metrica", "dbo");
+        builder.HasKey(e => e.MetricDataTypeId);
+        builder.Property(e => e.MetricDataTypeId).ValueGeneratedOnAdd();
+        builder.Property(e => e.Name).IsRequired().HasMaxLength(100);
+        builder.HasIndex(e => e.Name).IsUnique();
+        builder.Property(e => e.Description).HasMaxLength(500);
         builder.Property(e => e.CreatedBy).IsRequired(true).HasMaxLength(100);
         builder.Property(e => e.CreatedAt).ValueGeneratedOnAdd().HasDefaultValueSql("GETDATE()");
         builder.Property(e => e.UpdatedBy).IsRequired(false).HasMaxLength(100);
@@ -19,7 +22,5 @@ public class IndicatorOldToNewEntityConfiguration : IEntityTypeConfiguration<Ind
         builder.Property(e => e.IsDeleted).HasDefaultValue(false);
         builder.Property(e => e.RowGuid).ValueGeneratedOnAdd().HasDefaultValueSql("NEWID()");
         builder.HasIndex(e => e.RowGuid).IsUnique();
-        builder.HasOne(e => e.IndicatorOld).WithMany().HasForeignKey(e => e.IndicatorOldId);
-        builder.HasOne(e => e.IndicatorNew).WithMany().HasForeignKey(e => e.IndicatorNewId);
     }
 }
