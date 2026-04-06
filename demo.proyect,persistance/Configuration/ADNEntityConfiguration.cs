@@ -4,13 +4,13 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace demo.proyect_persistance.Configuration;
 
-public class ProjectTypeEntityConfiguration : IEntityTypeConfiguration<ProjectTypeEntity>
+public class ADNEntityConfiguration : IEntityTypeConfiguration<ADNEntity>
 {
-    public void Configure(EntityTypeBuilder<ProjectTypeEntity> builder)
+    public void Configure(EntityTypeBuilder<ADNEntity> builder)
     {
-        builder.ToTable("prj_tipo_proyecto", "dbo");
-        builder.HasKey(e => e.ProjectTypeId);
-        builder.Property(e => e.ProjectTypeId).ValueGeneratedOnAdd();
+        builder.ToTable("ADN", "dbo");
+        builder.HasKey(e => e.ADNId);
+        builder.Property(e => e.ADNId).ValueGeneratedOnAdd();
         builder.Property(e => e.Name).IsRequired().HasMaxLength(100);
         builder.HasIndex(e => e.Name).IsUnique();
         builder.Property(e => e.Description).HasMaxLength(500);
@@ -22,23 +22,7 @@ public class ProjectTypeEntityConfiguration : IEntityTypeConfiguration<ProjectTy
         builder.Property(e => e.IsDeleted).HasDefaultValue(false);
         builder.Property(e => e.RowGuid).ValueGeneratedOnAdd().HasDefaultValueSql("NEWID()");
         builder.HasIndex(e => e.RowGuid).IsUnique();
-        builder.HasData([
-            new() {
-                ProjectTypeId = 1,
-                Name = "Regulatorio",
-                Description = "Regulatorio",
-                CreatedBy = "me"
-            },
-                        new() {
-                ProjectTypeId = 2,
-                Name = "Comercial",
-                Description = "Comercial", CreatedBy = "me"
-            },
-                        new() {
-                ProjectTypeId = 3,
-                Name = "Tecnico",
-                Description = "Tecnico", CreatedBy = "me"
-            }
-            ]);
+        builder.HasOne(e => e.Period).WithMany().HasForeignKey(e =>  e.PeriodId);
+        builder.HasOne(e => e.Vision).WithMany().HasForeignKey(e => e.VisionId);
     }
 }

@@ -4,16 +4,19 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace demo.proyect_persistance.Configuration;
 
-public class ProjectTypeEntityConfiguration : IEntityTypeConfiguration<ProjectTypeEntity>
+public class ActivityEntityConfiguration : IEntityTypeConfiguration<ActivityEntity>
 {
-    public void Configure(EntityTypeBuilder<ProjectTypeEntity> builder)
+    public void Configure(EntityTypeBuilder<ActivityEntity> builder)
     {
-        builder.ToTable("prj_tipo_proyecto", "dbo");
-        builder.HasKey(e => e.ProjectTypeId);
-        builder.Property(e => e.ProjectTypeId).ValueGeneratedOnAdd();
+        builder.ToTable("actividades", "dbo");
+        builder.HasKey(e => e.ActivityId);
+        builder.Property(e => e.ActivityId).ValueGeneratedOnAdd();
         builder.Property(e => e.Name).IsRequired().HasMaxLength(100);
         builder.HasIndex(e => e.Name).IsUnique();
         builder.Property(e => e.Description).HasMaxLength(500);
+        builder.Property(e => e.Comment).IsRequired(true).HasMaxLength(250);
+        builder.Property(e => e.Date).IsRequired();
+        builder.Property(e => e.ActivityType).HasConversion<string>();
         builder.Property(e => e.CreatedBy).IsRequired(true).HasMaxLength(100);
         builder.Property(e => e.CreatedAt).ValueGeneratedOnAdd().HasDefaultValueSql("GETDATE()");
         builder.Property(e => e.UpdatedBy).IsRequired(false).HasMaxLength(100);
@@ -22,23 +25,5 @@ public class ProjectTypeEntityConfiguration : IEntityTypeConfiguration<ProjectTy
         builder.Property(e => e.IsDeleted).HasDefaultValue(false);
         builder.Property(e => e.RowGuid).ValueGeneratedOnAdd().HasDefaultValueSql("NEWID()");
         builder.HasIndex(e => e.RowGuid).IsUnique();
-        builder.HasData([
-            new() {
-                ProjectTypeId = 1,
-                Name = "Regulatorio",
-                Description = "Regulatorio",
-                CreatedBy = "me"
-            },
-                        new() {
-                ProjectTypeId = 2,
-                Name = "Comercial",
-                Description = "Comercial", CreatedBy = "me"
-            },
-                        new() {
-                ProjectTypeId = 3,
-                Name = "Tecnico",
-                Description = "Tecnico", CreatedBy = "me"
-            }
-            ]);
     }
 }

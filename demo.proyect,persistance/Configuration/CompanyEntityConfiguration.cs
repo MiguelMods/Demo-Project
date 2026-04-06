@@ -4,16 +4,18 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace demo.proyect_persistance.Configuration;
 
-public class ProjectTypeEntityConfiguration : IEntityTypeConfiguration<ProjectTypeEntity>
+public class CompanyEntityConfiguration : IEntityTypeConfiguration<CompanyEntity>
 {
-    public void Configure(EntityTypeBuilder<ProjectTypeEntity> builder)
+    public void Configure(EntityTypeBuilder<CompanyEntity> builder)
     {
-        builder.ToTable("prj_tipo_proyecto", "dbo");
-        builder.HasKey(e => e.ProjectTypeId);
-        builder.Property(e => e.ProjectTypeId).ValueGeneratedOnAdd();
+        builder.ToTable("compania", "dbo");
+        builder.HasKey(e => e.CompanyId);
+        builder.Property(e => e.CompanyId).ValueGeneratedOnAdd();
         builder.Property(e => e.Name).IsRequired().HasMaxLength(100);
         builder.HasIndex(e => e.Name).IsUnique();
         builder.Property(e => e.Description).HasMaxLength(500);
+        builder.Property(e => e.SocialContributionLabelNumber).IsRequired().HasMaxLength(15);
+        builder.HasIndex(e => e.SocialContributionLabelNumber).IsUnique();
         builder.Property(e => e.CreatedBy).IsRequired(true).HasMaxLength(100);
         builder.Property(e => e.CreatedAt).ValueGeneratedOnAdd().HasDefaultValueSql("GETDATE()");
         builder.Property(e => e.UpdatedBy).IsRequired(false).HasMaxLength(100);
@@ -22,23 +24,8 @@ public class ProjectTypeEntityConfiguration : IEntityTypeConfiguration<ProjectTy
         builder.Property(e => e.IsDeleted).HasDefaultValue(false);
         builder.Property(e => e.RowGuid).ValueGeneratedOnAdd().HasDefaultValueSql("NEWID()");
         builder.HasIndex(e => e.RowGuid).IsUnique();
-        builder.HasData([
-            new() {
-                ProjectTypeId = 1,
-                Name = "Regulatorio",
-                Description = "Regulatorio",
-                CreatedBy = "me"
-            },
-                        new() {
-                ProjectTypeId = 2,
-                Name = "Comercial",
-                Description = "Comercial", CreatedBy = "me"
-            },
-                        new() {
-                ProjectTypeId = 3,
-                Name = "Tecnico",
-                Description = "Tecnico", CreatedBy = "me"
-            }
-            ]);
+        builder.HasOne(e => e.SocialContributionLabelEntity).WithMany().HasForeignKey(e => e.SocualContributionLabelId);
+        builder.HasOne(e => e.StructureType).WithMany().HasForeignKey(e => e.StructureTypeId);
+        builder.HasOne(e => e.CompanyType).WithMany().HasForeignKey(e => e.CompanyTypeId);
     }
 }
