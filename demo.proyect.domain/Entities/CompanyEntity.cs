@@ -4,7 +4,7 @@ public class CompanyEntity : CommonNameDescription
 {
     public long CompanyId { get; set; }
     public SocialContributionLabelEntity SocialContributionLabelEntity { get; set; }
-    public string SocualContributionLabel { get; set; }
+    public string SocualContributionLabelId { get; set; }
     public string SocialContributionLabelNumber { get; set; }
     public StructureTypeEntity StructureType { get; set; }
     public long StructureTypeId { get; set; }
