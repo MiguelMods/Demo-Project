@@ -23,6 +23,7 @@ public class GoalEntityConfiguration : IEntityTypeConfiguration<GoalEntity>
         builder.HasOne(e => e.GoalType).WithMany().HasForeignKey(e => e.GoalTypeId).OnDelete(DeleteBehavior.Cascade);
         builder.HasOne(e => e.Project).WithMany().HasForeignKey(e => e.ProjectId).OnDelete(DeleteBehavior.Cascade);
         builder.HasMany(e => e.InitiativeEntities).WithOne(e => e.Goal).HasForeignKey(e => e.GoalId).OnDelete(DeleteBehavior.NoAction);
+        builder.HasOne(e => e.Employee).WithMany().HasForeignKey(e => e.EmployeeId).OnDelete(DeleteBehavior.NoAction);
         builder.Property(e => e.CreatedBy).IsRequired(true).HasMaxLength(100);
         builder.Property(e => e.CreatedAt).ValueGeneratedOnAdd().HasDefaultValueSql("GETDATE()");
         builder.Property(e => e.UpdatedBy).IsRequired(false).HasMaxLength(100);

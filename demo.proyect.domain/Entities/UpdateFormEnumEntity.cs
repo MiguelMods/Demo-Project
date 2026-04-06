@@ -2,7 +2,8 @@
 
 public partial class MetricEntity
 {
-    public enum UpdateFormEnumEntity 
-{
-    Manual = 1, Automatic = 2
+    public enum UpdateFormEnumEntity
+    {
+        Manual = 1, Automatic = 2
+    }
 }
