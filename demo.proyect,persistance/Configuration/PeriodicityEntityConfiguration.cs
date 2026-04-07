@@ -4,12 +4,20 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace demo.proyect_persistance.Configuration;
 
-public class IndicatorEmployeeCompleteEntityConfiguration : IEntityTypeConfiguration<IndicatorEmployeeCompleteEntity>
+public class PeriodicityEntityConfiguration : IEntityTypeConfiguration<PeriodicityEntity>
 {
-    public void Configure(EntityTypeBuilder<IndicatorEmployeeCompleteEntity> builder)
+    public void Configure(EntityTypeBuilder<PeriodicityEntity> builder)
     {
-        builder.ToTable("indicador_empleado_completado", "dbo");
-        builder.HasKey(e => new { e.IndicatorId, e.EmployeeId });
+        builder.ToTable("periocidad", "dbo");
+        builder.HasKey(e => e.PeriodicityId);
+        builder.Property(e => e.PeriodicityId).ValueGeneratedOnAdd();
+        builder.Property(e => e.Code).IsRequired().HasMaxLength(6);
+        builder.HasIndex(e => e.Code).IsUnique();
+        builder.Property(e => e.Name).IsRequired().HasMaxLength(100);
+        builder.HasIndex(e => e.Name).IsUnique();
+        builder.Property(e => e.Description).HasMaxLength(500);
+        builder.Property(e => e.OpenPeriod).IsRequired();
+        builder.Property(e => e.ToPrintInd).IsRequired();
         builder.Property(e => e.CreatedBy).IsRequired(true).HasMaxLength(100);
         builder.Property(e => e.CreatedAt).ValueGeneratedOnAdd().HasDefaultValueSql("GETDATE()");
         builder.Property(e => e.UpdatedBy).IsRequired(false).HasMaxLength(100);
@@ -18,8 +26,5 @@ public class IndicatorEmployeeCompleteEntityConfiguration : IEntityTypeConfigura
         builder.Property(e => e.IsDeleted).HasDefaultValue(false);
         builder.Property(e => e.RowGuid).ValueGeneratedOnAdd().HasDefaultValueSql("NEWID()");
         builder.HasIndex(e => e.RowGuid).IsUnique();
-        builder.HasOne(e => e.IndicatorEntity).WithMany().HasForeignKey(e => e.IndicatorId);
-        builder.HasOne(e => e.EmployeeEntity).WithMany().HasForeignKey(e => e.EmployeeId);
-        builder.Property(e => e.Comment).IsRequired().HasMaxLength(250);
     }
 }

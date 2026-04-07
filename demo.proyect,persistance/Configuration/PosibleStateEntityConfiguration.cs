@@ -4,12 +4,14 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace demo.proyect_persistance.Configuration;
 
-public class IndicatorEmployeeCompleteEntityConfiguration : IEntityTypeConfiguration<IndicatorEmployeeCompleteEntity>
+public class PosibleStateEntityConfiguration : IEntityTypeConfiguration<PosibleStateEntity>
 {
-    public void Configure(EntityTypeBuilder<IndicatorEmployeeCompleteEntity> builder)
+    public void Configure(EntityTypeBuilder<PosibleStateEntity> builder)
     {
-        builder.ToTable("indicador_empleado_completado", "dbo");
-        builder.HasKey(e => new { e.IndicatorId, e.EmployeeId });
+        builder.ToTable("posible_elemento_periodo_estado", "dbo");
+        builder.HasKey(e => new { e.ElementTypeId, e.PeriodId, e.StateId });
+        builder.Property(e => e.MinimumValue).IsRequired();
+        builder.Property(e => e.MaximumValue).IsRequired();
         builder.Property(e => e.CreatedBy).IsRequired(true).HasMaxLength(100);
         builder.Property(e => e.CreatedAt).ValueGeneratedOnAdd().HasDefaultValueSql("GETDATE()");
         builder.Property(e => e.UpdatedBy).IsRequired(false).HasMaxLength(100);
@@ -18,8 +20,8 @@ public class IndicatorEmployeeCompleteEntityConfiguration : IEntityTypeConfigura
         builder.Property(e => e.IsDeleted).HasDefaultValue(false);
         builder.Property(e => e.RowGuid).ValueGeneratedOnAdd().HasDefaultValueSql("NEWID()");
         builder.HasIndex(e => e.RowGuid).IsUnique();
-        builder.HasOne(e => e.IndicatorEntity).WithMany().HasForeignKey(e => e.IndicatorId);
-        builder.HasOne(e => e.EmployeeEntity).WithMany().HasForeignKey(e => e.EmployeeId);
-        builder.Property(e => e.Comment).IsRequired().HasMaxLength(250);
+        builder.HasOne(e => e.ElementType).WithMany().HasForeignKey(e => e.ElementTypeId);
+        builder.HasOne(e => e.PeriodEntity).WithMany().HasForeignKey(e => e.PeriodId);
+        builder.HasOne(e => e.StateEntity).WithMany().HasForeignKey(e => e.StateId);
     }
 }
